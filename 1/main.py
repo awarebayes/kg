@@ -1,12 +1,13 @@
 import tkinter as tk
+import tkinter.font as tkFont
 from dataclasses import dataclass
-
+from tkinter import scrolledtext
+from prettytable import PrettyTable
 
 @dataclass
 class Point:
     x: float
     y: float
-    label: str
 
 
 def is_float(element) -> bool:
@@ -17,83 +18,60 @@ def is_float(element) -> bool:
         return False
 
 
-class PointView(tk.Frame):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.x_var = tk.StringVar()
-        self.y_var = tk.StringVar()
-        self.x_var.set("0.0")
-        self.y_var.set("0.0")
-        self.label_var = tk.StringVar()
-        self.label_var.set("Set 1")
+class Observable:
+    def __init__(self, value):
+        self._value = value
+        self._callbacks = []
 
-        self.x_frame = tk.Frame(self)
-        self.x_label = tk.Label(self.x_frame, text="x:")
-        self.x_input = tk.Entry(self.x_frame, textvariable=self.x_var, width=16)
+    def notify(self):
+        for cb in self._callbacks:
+            cb()
 
-        self.y_frame = tk.Frame(self)
-        self.y_label = tk.Label(self.y_frame, text="y:")
-        self.y_input = tk.Entry(self.y_frame, textvariable=self.y_var, width=16)
+    def set(self, value):
+        self._value = value
+        self.notify()
 
-        self.misc_frame = tk.Frame(self)
-        self.label_dropdown = tk.OptionMenu(self.misc_frame, self.label_var, "Set 1", "Set 2")
-        self.delete_button = tk.Button(self.misc_frame, text="x", command=self.destroy)
+    def get(self):
+        return self._value
 
-        self.x_frame.grid(row=0, column=0)
-        self.y_frame.grid(row=0, column=1)
-        self.misc_frame.grid(row=0, column=2)
-
-        self.x_label.grid(row=0, column=0)
-        self.x_input.grid(row=0, column=1)
-
-        self.y_label.grid(row=0, column=0)
-        self.y_input.grid(row=0, column=1)
-
-        self.label_dropdown.grid(row=0, column=0)
-        self.delete_button.grid(row=0, column=1)
-        self.is_destroyed = False
-
-    def destroy(self) -> None:
-        self.is_destroyed = True
-        super().destroy()
-
-    def get_point(self):
-        x_var = self.x_var.get()
-        y_var = self.y_var.get()
-        try:
-            x = float(x_var)
-            y = float(y_var)
-            label = self.label_var.get()
-            return Point(x, y, label)
-        except ValueError:
-            error_message = "Ошибка: точка указана неверно"
-            if not is_float(x_var):
-                error_message += f"\n X-компонента точки указана неверно: {x_var}"
-            if not is_float(y_var):
-                error_message += f"\n Y-компонента точки указана неверно: {y_var}"
-            if self.label_var.get() not in ["Set 1", "Set 2"]:
-                error_message += "\n Label точки указан неверно. Не знаю, как у вас это получилось"
-            raise ValueError(error_message)
+    def add_callback(self, cb):
+        self._callbacks.append(cb)
 
 
 class SidePanel(tk.Frame):
-    def __init__(self, parent):
+    def __init__(self, parent, get_points, set_points):
         super().__init__(parent)
-        self.add_button = tk.Button(self, text="add 1", command=self.add_point)
-        self.add_button.grid(row=0, column=0)
 
-        self.scrollable_frame = ScrolledFrame(self)
-        self.point_components = []
+        self.add_button = tk.Button(self, text="Add point", command=self.add_point)
+        self.edit_button = tk.Button(self, text="Edit point", command=self.add_point)
+        self.delete_button = tk.Button(self, text="Delete point", command=self.add_point)
+        self.clear_button = tk.Button(self, text="Delete all points", command=self.add_point)
+        self.text_area = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=45,
+                                              height=50, font=("Times New Roman", 14))
+        self.text_area.config(state=tk.DISABLED)
 
-        self.scrollable_frame.grid(row=1, column=0)
-        self.point_count = 0
+        self.add_button.grid(row=0, column=0, columnspan=3)
+        self.edit_button.grid(row=1, column=0)
+        self.delete_button.grid(row=1, column=1)
+        self.clear_button.grid(row=1, column=2)
+        self.text_area.grid(row=2, column=0, columnspan=3)
+        self.get_points = get_points
+        self.set_points = set_points
 
     def add_point(self):
-        component = PointView(self.scrollable_frame)
-        component.grid(column=0, row=self.point_count)
-        self.point_count += 1
-        self.point_components.append(component)
+        point =
 
+    def reformat_table(self):
+        table = PrettyTable()
+        table.field_names = ["Idx", "X", "Y"]
+        for i, point in enumerate(self.get_points()):
+            table.add_row([i, point.x, point.y])
+        string = table.get_string()
+
+        self.text_area.config(state=tk.NORMAL)
+        self.text_area.delete(1.0, tk.END)
+        self.text_area.insert(tk.END, string)
+        self.text_area.config(state=tk.DISABLED)
 
 class Canvas(tk.Frame):
     def __init__(self, parent, **kwargs):
@@ -109,6 +87,16 @@ class App(tk.Tk):
         self.canvas = Canvas(self)
         self.side_panel.pack(side=tk.LEFT, expand=True, fill="both")
         self.canvas.pack(side=tk.LEFT)
+
+        self.points = Observable(list())
+        self.points.add_callback(self.side_panel.reformat_table)
+
+
+    def add_point(self, point: Point):
+        self.points.append(point)
+
+    def get_points(self):
+        return self.points
 
 
 if __name__ == "__main__":
