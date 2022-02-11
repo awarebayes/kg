@@ -11,6 +11,7 @@ def close_other_windows(method):
             w.update()
         w = method(self, *method_args, **method_kwargs)
         self.opened_windows = [w]
+
     return inner
 
 
@@ -30,7 +31,6 @@ class Controller:
 
     @close_other_windows
     def dialog_edit_point(self):
-
         def show_editor(index):
             initial_point = self.fetch_point(index)
             return ShowPointEditor(lambda p: self.edit_point(index, p), initial_point)
@@ -63,7 +63,7 @@ class Controller:
         self.set_points(points)
 
     def get_points(self):
-        return self.model.get('points')
+        return self.model.get("points")
 
     def set_points(self, value):
-        self.model.set('points', value)
+        self.model.set("points", value)

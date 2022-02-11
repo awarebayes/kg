@@ -32,11 +32,11 @@ class ShowPointEditor(tk.Toplevel):
         self.y_var.set(str(initial.y))
         self.label_var = tk.StringVar()
 
-        self.x_label = tk.Label(self, text="x:")
-        self.x_input = tk.Entry(self, textvariable=self.x_var, width=16)
+        self.x_label = tk.Label(self, text="x:", font=14)
+        self.x_input = tk.Entry(self, textvariable=self.x_var, width=16, font=14)
 
-        self.y_label = tk.Label(self, text="y:")
-        self.y_input = tk.Entry(self, textvariable=self.y_var, width=16)
+        self.y_label = tk.Label(self, text="y:", font=14)
+        self.y_input = tk.Entry(self, textvariable=self.y_var, width=16, font=14)
 
         self.finish_button = tk.Button(self, text="Finish", command=self.on_proceed)
 
@@ -101,8 +101,12 @@ class AskPointIndex(tk.Toplevel):
         self.index_var.set("0")
         self.max_index = max_index
 
-        self.index_label = tk.Label(self, text=f"Index of point[0...{max_index}]")
-        self.index_entry = tk.Entry(self, textvariable=self.index_var, width=16)
+        self.index_label = tk.Label(
+            self, text=f"Index of point[0...{max_index}]: ", font=14
+        )
+        self.index_entry = tk.Entry(
+            self, textvariable=self.index_var, width=16, font=14
+        )
 
         self.proceed_button = tk.Button(self, text="Proceed", command=self.on_proceed)
 

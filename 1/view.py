@@ -9,15 +9,29 @@ class SidePanelView(tk.Frame):
 
         self.controller = controller
 
-        self.add_button = tk.Button(self, text="Add point", command=controller.dialog_add_point)
-        self.calculate_button = tk.Button(self, text="Calculate", command=controller.dialog_add_point)
+        self.add_button = tk.Button(
+            self, text="Add point", command=controller.dialog_add_point, font=13
+        )
+        self.calculate_button = tk.Button(
+            self, text="Calculate", command=controller.dialog_add_point, font=13
+        )
 
-        self.edit_button = tk.Button(self, text="Edit point", command=controller.dialog_edit_point)
-        self.delete_button = tk.Button(self, text="Delete point", command=controller.dialog_delete_point)
-        self.clear_button = tk.Button(self, text="Delete all points", command=controller.delete_all_points)
+        self.edit_button = tk.Button(
+            self, text="Edit point", command=controller.dialog_edit_point, font=13
+        )
+        self.delete_button = tk.Button(
+            self, text="Delete point", command=controller.dialog_delete_point, font=13
+        )
+        self.clear_button = tk.Button(
+            self,
+            text="Delete all points",
+            command=controller.delete_all_points,
+            font=13,
+        )
 
-        self.text_area = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=45,
-                                                   height=50, font=("Times New Roman", 14))
+        self.text_area = scrolledtext.ScrolledText(
+            self, wrap=tk.WORD, width=45, height=30, font=("Consolas", 14)
+        )
         self.text_area.config(state=tk.DISABLED)
 
         self.add_button.grid(row=0, column=0)
@@ -36,7 +50,9 @@ class SidePanelView(tk.Frame):
             table = PrettyTable()
             table.field_names = ["Idx", "X", "Y"]
             for i, point in enumerate(points):
-                table.add_row([i, point.x, point.y])
+                x_str = f"{point.x:.10g}"
+                y_str = f"{point.y:.10g}"
+                table.add_row([i, x_str, y_str])
             string = table.get_string()
         self.text_area.config(state=tk.NORMAL)
         self.text_area.delete(1.0, tk.END)

@@ -29,7 +29,7 @@ class Observable:
 
 class Model:
     def __init__(self):
-        self.observables = {'points': Observable(list())}
+        self.observables = {"points": Observable(list())}
 
     def add_callback(self, field, callback):
         self.observables[field].add_callback(callback)
