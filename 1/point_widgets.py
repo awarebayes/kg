@@ -1,7 +1,8 @@
 import tkinter as tk
+from abc import ABC
 from dataclasses import dataclass
 from tkinter import messagebox
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Callable, Any
 
 
 @dataclass
@@ -18,14 +19,50 @@ def is_float(element) -> bool:
         return False
 
 
-class ShowPointEditor(tk.Toplevel):
-    def __init__(self, callback, initial=None):
+class ToplevelWidget(tk.Toplevel, ABC):
+    def __init__(self, callback: Callable, initial: Optional = None):
         super().__init__()
+        self.callback = callback
+        self.protocol("WM_DELETE_WINDOW", self.ask_should_continue)
+        self.set_active()
+
+    def ask_should_continue(self, error_message=None):
+        if error_message is None:
+            error_message = ""
+        error_message += "Do you want to continue?"
+        should_continue = messagebox.askyesno("Answer, please", error_message)
+        if not should_continue:
+            self.destroy()
+            self.update()
+        self.set_active()
+
+    def get_value(self) -> any:
+        pass
+
+    def on_proceed(self):
+        try:
+            value = self.get_value()
+            self.callback(value)
+            self.destroy()
+            self.update()
+        except ValueError as e:
+            error_message = str(e)
+            self.ask_should_continue(error_message)
+
+    def set_active(self):
+        self.lift()
+        self.focus_force()
+        self.grab_set()
+        self.grab_release()
+
+
+class ShowPointEditor(ToplevelWidget):
+    def __init__(self, callback, initial=None):
+        super().__init__(callback)
 
         if initial is None:
             initial = Point(0.0, 0.0)
 
-        self.callback = callback
         self.x_var = tk.StringVar()
         self.y_var = tk.StringVar()
         self.x_var.set(str(initial.x))
@@ -48,10 +85,8 @@ class ShowPointEditor(tk.Toplevel):
 
         self.finish_button.grid(row=2, column=0, columnspan=2)
 
-        self.protocol("WM_DELETE_WINDOW", self.on_proceed)
-        self.set_active()
 
-    def get_point(self):
+    def get_value(self):
         x_var = self.x_var.get()
         y_var = self.y_var.get()
         try:
@@ -66,30 +101,10 @@ class ShowPointEditor(tk.Toplevel):
                 error_message += f" Y-component should be float, got: {y_var}\n"
             raise ValueError(error_message)
 
-    def on_proceed(self):
-        try:
-            point = self.get_point()
-            self.callback(point)
-            self.destroy()
-            self.update()
-        except ValueError as e:
-            error_message = str(e)
-            error_message += "Do you want to continue?"
-            should_continue = messagebox.askyesno("Answer, please", error_message)
-            if not should_continue:
-                self.destroy()
-                self.update()
 
-    def set_active(self):
-        self.lift()
-        self.focus_force()
-        self.grab_set()
-        self.grab_release()
-
-
-class AskPointIndex(tk.Toplevel):
-    def __init__(self, max_index, callback):
-        super().__init__()
+class AskPointIndex(ToplevelWidget):
+    def __init__(self, callback: Callable, max_index: int):
+        super().__init__(callback)
 
         if max_index == -1:
             self.destroy()
@@ -114,36 +129,15 @@ class AskPointIndex(tk.Toplevel):
         self.index_entry.grid(row=0, column=1)
         self.proceed_button.grid(row=1, column=0, columnspan=2)
 
-        self.protocol("WM_DELETE_WINDOW", self.on_proceed)
-        self.set_active()
-
-    def get_number(self):
+    def get_value(self):
         x_var = self.index_var.get()
-        x = float(x_var)
+        try:
+            x = float(x_var)
+        except ValueError:
+            raise ValueError("Your value is not numeric\n")
         if not x.is_integer():
-            raise ValueError("Integer value expected")
+            raise ValueError("Integer value expected\n")
         x = int(x)
         if not (0 <= x <= self.max_index):
-            raise ValueError(f"Your integer should be in [0...{self.max_index}]")
+            raise ValueError(f"Your integer should be in [0...{self.max_index}]\n")
         return x
-
-    def on_proceed(self):
-        try:
-            number = self.get_number()
-            self.callback(number)
-            self.destroy()
-            self.update()
-
-        except ValueError as e:
-            error_message = str(e)
-            error_message += "Do you want to continue?"
-            should_continue = messagebox.askyesno("Answer, please", error_message)
-            if not should_continue:
-                self.destroy()
-                self.update()
-
-    def set_active(self):
-        self.lift()
-        self.focus_force()
-        self.grab_set()
-        self.grab_release()

@@ -1,6 +1,8 @@
 from tkinter import scrolledtext, messagebox
 from prettytable import PrettyTable
 import tkinter as tk
+from shapes import ObjectComposition
+from flipped_canvas import  FlippedCanvas
 
 
 class SidePanelView(tk.Frame):
@@ -13,7 +15,11 @@ class SidePanelView(tk.Frame):
             self, text="Add point", command=controller.dialog_add_point, font=13
         )
         self.calculate_button = tk.Button(
-            self, text="Calculate", command=controller.dialog_add_point, font=13
+            self, text="Calculate", command=controller.try_solve, font=13
+        )
+
+        self.task_button = tk.Button(
+            self, text="Show task", command=controller.show_task, font=13
         )
 
         self.edit_button = tk.Button(
@@ -36,6 +42,7 @@ class SidePanelView(tk.Frame):
 
         self.add_button.grid(row=0, column=0)
         self.calculate_button.grid(row=0, column=1)
+        self.task_button.grid(row=0, column=2)
         self.edit_button.grid(row=1, column=0)
         self.delete_button.grid(row=1, column=1)
         self.clear_button.grid(row=1, column=2)
@@ -61,8 +68,21 @@ class SidePanelView(tk.Frame):
 
 
 class CanvasView(tk.Frame):
-    def __init__(self, parent, controller):
+    def __init__(self, parent, controller, width, height):
         super(CanvasView, self).__init__(parent)
         self.controller = controller
-        self.canvas = tk.Canvas(self, bg="black", height=800, width=800)
+        self.height = height
+        self.width = width
+        self.canvas = FlippedCanvas(self, bg="white", height=height, width=width)
         self.canvas.pack()
+        self.canvas.update()
+
+    def get_canvas_dim(self):
+        return self.width, self.height
+
+    def draw_shapes(self, shapes: ObjectComposition):
+        self.canvas.delete("all")
+        shapes.fit_to_canvas(self.get_canvas_dim())
+        shapes['triangle'].draw(self.canvas, fill="red", width=2)
+        shapes['in_circ'].draw(self.canvas, outline="blue", width=2)
+        shapes['out_circ'].draw(self.canvas, outline="green", width=2)
