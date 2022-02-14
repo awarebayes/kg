@@ -115,7 +115,8 @@ class Controller:
 
         difference = solution.area_difference(triangle)
         messagebox.showinfo(
-            "Info", f"Answer is the triangle:\n{triangle_str}With circle area difference: {difference}"
+            "Info",
+            f"Answer is the triangle:\n{triangle_str}With circle area difference: {difference}",
         )
         self.render(triangle)
 
@@ -125,5 +126,9 @@ class Controller:
         # point indices
         indices = list(map(self.get_points().index, triangle))
 
-        shapes['triangle'].point_names = {'a': indices[0], 'b': indices[1], 'c': indices[2]}
+        shapes["triangle"].point_names = {
+            "a": indices[0],
+            "b": indices[1],
+            "c": indices[2],
+        }
         self.canvas.draw_shapes(shapes)

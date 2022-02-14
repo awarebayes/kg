@@ -15,7 +15,17 @@ def l2(p1: Point, p2: Point) -> float:
 
 
 def triangle_area(p1: Point, p2: Point, p3: Point) -> float:
-    return abs(p1.x * p2.y + p2.x * p3.y + p3.x * p1.y - p1.y * p2.x - p2.y * p3.x - p3.y * p1.x) / 2
+    return (
+        abs(
+            p1.x * p2.y
+            + p2.x * p3.y
+            + p3.x * p1.y
+            - p1.y * p2.x
+            - p2.y * p3.x
+            - p3.y * p1.x
+        )
+        / 2
+    )
 
 
 def triangle_sides(a, b, c) -> Tuple[float, float, float]:
@@ -41,7 +51,7 @@ def inscribed_circle_radius(a: Point, b: Point, c: Point) -> float:
     side_a, side_b, side_c = triangle_sides(a, b, c)
     s = (side_a + side_b + side_c) / 2
     r_2 = (s - side_a) * (s - side_b) * (s - side_c) / s
-    return r_2 ** 0.5
+    return r_2**0.5
 
 
 def inscribed_circle_center(a: Point, b: Point, c: Point) -> np.ndarray:
@@ -58,28 +68,28 @@ def outscribed_circle_center(p1: Point, p2: Point, p3: Point) -> np.ndarray:
     a = np.linalg.det([[p1.x, p1.y, 1], [p2.x, p2.y, 1], [p3.x, p3.y, 1]])
     b_x = -np.linalg.det(
         [
-            [p1.x ** 2 + p1.y ** 2, p1.y, 1],
-            [p2.x ** 2 + p2.y ** 2, p2.y, 1],
-            [p3.x ** 2 + p3.y ** 2, p3.y, 1],
+            [p1.x**2 + p1.y**2, p1.y, 1],
+            [p2.x**2 + p2.y**2, p2.y, 1],
+            [p3.x**2 + p3.y**2, p3.y, 1],
         ]
     )
 
     b_y = np.linalg.det(
         [
-            [p1.x ** 2 + p1.y ** 2, p1.x, 1],
-            [p2.x ** 2 + p2.y ** 2, p2.x, 1],
-            [p3.x ** 2 + p3.y ** 2, p3.x, 1],
+            [p1.x**2 + p1.y**2, p1.x, 1],
+            [p2.x**2 + p2.y**2, p2.x, 1],
+            [p3.x**2 + p3.y**2, p3.x, 1],
         ]
     )
 
-    o_x = - b_x / (2 * a)
-    o_y = - b_y / (2 * a)
+    o_x = -b_x / (2 * a)
+    o_y = -b_y / (2 * a)
 
     return np.array([o_x, o_y])
 
 
 def circle_area(r: float) -> float:
-    return pi * r ** 2
+    return pi * r**2
 
 
 def area_difference(triangle: Triangle) -> float:
@@ -118,4 +128,10 @@ def get_shape_composition(triangle: Triangle) -> shapes.ObjectComposition:
     in_circ_shape = shapes.Circle(in_center, in_r)
     out_circ_shape = shapes.Circle(out_center, out_r)
 
-    return shapes.ObjectComposition({'triangle': triangle_shape, 'in_circ': in_circ_shape, 'out_circ': out_circ_shape})
+    return shapes.ObjectComposition(
+        {
+            "triangle": triangle_shape,
+            "in_circ": in_circ_shape,
+            "out_circ": out_circ_shape,
+        }
+    )

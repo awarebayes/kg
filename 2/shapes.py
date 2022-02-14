@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from PyQt5.QtCore import QPointF
 from PyQt5.QtGui import QPainter
 
 from model import Transformations
@@ -12,8 +13,8 @@ class Circle:
     radius: float
 
     def apply_transforms(self, transformations: Transformations):
-        self.x_0 *= transformations.scale
-        self.y_0 *= transformations.scale
+        #self.x_0 *= transformations.scale
+        #self.y_0 *= transformations.scale
 
         self.x_0 += transformations.trans_x
         self.y_0 += transformations.trans_x
@@ -25,7 +26,7 @@ class Circle:
         y_0 = int(self.y_0)
         r = int(self.radius)
 
-        qp.drawEllipse(x_0, y_0, r, r)
+        qp.drawEllipse(QPointF(x_0, y_0), r, r)
 
 
 class Parabola:

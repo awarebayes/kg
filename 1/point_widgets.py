@@ -85,7 +85,6 @@ class ShowPointEditor(ToplevelWidget):
 
         self.finish_button.grid(row=2, column=0, columnspan=2)
 
-
     def get_value(self):
         x_var = self.x_var.get()
         y_var = self.y_var.get()

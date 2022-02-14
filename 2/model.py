@@ -80,12 +80,12 @@ class Model:
             "trans_x": ObservableFloat(0, 0.0, 1.0),
             "trans_y": ObservableFloat(0, 0.0, 1.0),
             "rotate": ObservableFloat(0, -180, 180),
-            "scale": ObservableFloat(1, 0.1, 5),
-            "a": ObservableFloat(0.01, 0.01, 1),
-            "b": ObservableFloat(0.01, 0.01, 1),
-            "c": ObservableFloat(0.01, 0.01, 1),
-            "d": ObservableFloat(0.01, 0.01, 1),
-            "r": ObservableFloat(0.01, 0.01, 1),
+            "scale": ObservableFloat(1, low=0.1, high=5),
+            "a": ObservableFloat(0.1, low=0.01, high=1),
+            "b": ObservableFloat(0.1, low=0.01, high=1),
+            "c": ObservableFloat(0.1, low=0.01, high=1),
+            "d": ObservableFloat(0.1, low=0.01, high=1),
+            "r": ObservableFloat(0.1, low=0.01, high=1),
             "show_base_figures": Observable(False),
         }
 

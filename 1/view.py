@@ -2,7 +2,7 @@ from tkinter import scrolledtext, messagebox
 from prettytable import PrettyTable
 import tkinter as tk
 from shapes import ObjectComposition
-from flipped_canvas import  FlippedCanvas
+from flipped_canvas import FlippedCanvas
 
 
 class SidePanelView(tk.Frame):
@@ -83,6 +83,6 @@ class CanvasView(tk.Frame):
     def draw_shapes(self, shapes: ObjectComposition):
         self.canvas.delete("all")
         shapes.fit_to_canvas(self.get_canvas_dim())
-        shapes['triangle'].draw(self.canvas, fill="red", width=2)
-        shapes['in_circ'].draw(self.canvas, outline="blue", width=2)
-        shapes['out_circ'].draw(self.canvas, outline="green", width=2)
+        shapes["triangle"].draw(self.canvas, fill="red", width=2)
+        shapes["in_circ"].draw(self.canvas, outline="blue", width=2)
+        shapes["out_circ"].draw(self.canvas, outline="green", width=2)

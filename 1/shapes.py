@@ -34,8 +34,12 @@ class Triangle(GeometryObject):
         self.a = np.array([a.x, a.y])
         self.b = np.array([b.x, b.y])
         self.c = np.array([c.x, c.y])
-        self.original_params = {'a': self.a.copy(), 'b': self.b.copy(), 'c': self.c.copy()}
-        self.point_names = {'a': 'a', 'b': 'b', 'c': 'c'}
+        self.original_params = {
+            "a": self.a.copy(),
+            "b": self.b.copy(),
+            "c": self.c.copy(),
+        }
+        self.point_names = {"a": "a", "b": "b", "c": "c"}
 
     def scale(self, factor):
         self.a *= factor
@@ -56,9 +60,9 @@ class Triangle(GeometryObject):
         canvas.create_line(*self.a, *self.b, **kwargs)
         canvas.create_line(*self.b, *self.c, **kwargs)
         canvas.create_line(*self.a, *self.c, **kwargs)
-        self.annotate_point('a', canvas)
-        self.annotate_point('b', canvas)
-        self.annotate_point('c', canvas)
+        self.annotate_point("a", canvas)
+        self.annotate_point("b", canvas)
+        self.annotate_point("c", canvas)
 
     def annotate_point(self, name: str, canvas: Canvas):
         center_orig = self.original_params[name]
@@ -91,7 +95,9 @@ class Circle(GeometryObject):
 
     def annotate(self, canvas: Canvas):
         center = self.original_params[0]
-        text = f"Circ ({center[0]:.2f}, {center[1]:.2f}) R: {self.original_params[1]:.2f}"
+        text = (
+            f"Circ ({center[0]:.2f}, {center[1]:.2f}) R: {self.original_params[1]:.2f}"
+        )
         canvas.create_text(*self.center, text=text, font=13)
 
 
