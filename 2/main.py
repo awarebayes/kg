@@ -16,6 +16,7 @@ from controller import Controller
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
 
@@ -28,7 +29,7 @@ if __name__ == "__main__":
 
     view.setupUi(MainWindow)
     view.register_controller_callbacks()
-    view.register_model_callbacks(model)
+    view.register_view_callbacks(model)
 
     MainWindow.show()
     sys.exit(app.exec_())

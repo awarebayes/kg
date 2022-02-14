@@ -14,16 +14,9 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,5">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,5">
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QCheckBox" name="showSlidersCB">
-        <property name="text">
-         <string>Show sliders</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QCheckBox" name="ShowBaseFigures">
         <property name="text">
@@ -32,202 +25,203 @@
        </widget>
       </item>
       <item>
-       <widget class="QStackedWidget" name="stackedWidget">
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="page">
-         <property name="minimumSize">
-          <size>
-           <width>331</width>
-           <height>225</height>
-          </size>
-         </property>
-         <widget class="QWidget" name="formLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>1</x>
-            <y>1</y>
-            <width>331</width>
-            <height>211</height>
-           </rect>
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0,0,0,0,0" columnstretch="0,0">
+        <item row="6" column="1">
+         <widget class="QDoubleSpinBox" name="CSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
           </property>
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="0">
-            <widget class="QLabel" name="TransYLabel">
-             <property name="text">
-              <string>Translate Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="TransXLabel">
-             <property name="text">
-              <string>Translate X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSlider" name="TransYSlider">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QSlider" name="RotateSlider">
-             <property name="minimum">
-              <number>-180</number>
-             </property>
-             <property name="maximum">
-              <number>180</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QSlider" name="ScaleSlider">
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>20</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="invertedAppearance">
-              <bool>false</bool>
-             </property>
-             <property name="invertedControls">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QSlider" name="TransXSlider">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="ScaleLabel">
-             <property name="text">
-              <string>Scale</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="RotateLabel">
-             <property name="text">
-              <string>Rotate (deg)</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-        <widget class="QWidget" name="page_2">
-         <property name="minimumSize">
-          <size>
-           <width>331</width>
-           <height>225</height>
-          </size>
-         </property>
-         <widget class="QWidget" name="gridLayoutWidget">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>331</width>
-            <height>211</height>
-           </rect>
+          <property name="maximum">
+           <double>1.000000000000000</double>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0" columnstretch="0,0">
-           <item row="0" column="0">
-            <widget class="QLabel" name="TransXLabel1">
-             <property name="text">
-              <string>Translate X</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="RotateLabel1">
-             <property name="text">
-              <string>Rotate (deg)</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="TransYLabel1">
-             <property name="text">
-              <string>Translate Y</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="TransScaleLabel1">
-             <property name="text">
-              <string>Scale</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QDoubleSpinBox" name="TransXSB">
-             <property name="maximum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.050000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QDoubleSpinBox" name="TransYSB">
-             <property name="maximum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.050000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QDoubleSpinBox" name="ScaleSB">
-             <property name="minimum">
-              <double>0.100000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>20.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.500000000000000</double>
-             </property>
-             <property name="value">
-              <double>1.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QDoubleSpinBox" name="RotateSB">
-             <property name="minimum">
-              <double>-180.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>180.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>10.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
          </widget>
-        </widget>
-       </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>b</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QDoubleSpinBox" name="BSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="DSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>d</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="TransXLabel1">
+          <property name="text">
+           <string>Translate X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="ScaleSB">
+          <property name="minimum">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>20.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QDoubleSpinBox" name="TransXSB">
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="RotateLabel1">
+          <property name="text">
+           <string>Rotate (deg)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="TransYLabel1">
+          <property name="text">
+           <string>Translate Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="TransScaleLabel1">
+          <property name="text">
+           <string>Scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="TransYSB">
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QDoubleSpinBox" name="ASB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>c</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="RotateSB">
+          <property name="minimumSize">
+           <size>
+            <width>74</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="minimum">
+           <double>-180.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>180.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>10.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>r</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
+         <widget class="QDoubleSpinBox" name="RSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.100000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="verticalSpacer">
