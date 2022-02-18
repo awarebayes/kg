@@ -1,5 +1,3 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import Qt
 from ui import Ui_MainWindow
 from model import Model
 from functools import partial

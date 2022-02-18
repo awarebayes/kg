@@ -77,14 +77,14 @@ class ObservableFloat(Observable):
 class Model:
     def __init__(self):
         self.observables = {
-            "trans_x": ObservableFloat(0, 0.0, 1.0),
-            "trans_y": ObservableFloat(0, 0.0, 1.0),
+            "trans_x": ObservableFloat(0, -0.5, 0.5),
+            "trans_y": ObservableFloat(0, -0.5, 0.5),
             "rotate": ObservableFloat(0, -180, 180),
             "scale": ObservableFloat(1, low=0.1, high=5),
-            "a": ObservableFloat(0.1, low=0.01, high=1),
-            "b": ObservableFloat(0.1, low=0.01, high=1),
-            "c": ObservableFloat(0.1, low=0.01, high=1),
-            "d": ObservableFloat(0.1, low=0.01, high=1),
+            "a": ObservableFloat(0.5, low=0.01, high=1),
+            "b": ObservableFloat(0.5, low=0.01, high=1),
+            "c": ObservableFloat(0.5, low=0.01, high=1),
+            "d": ObservableFloat(0.5, low=0.01, high=1),
             "r": ObservableFloat(0.1, low=0.01, high=1),
             "show_base_figures": Observable(False),
         }
