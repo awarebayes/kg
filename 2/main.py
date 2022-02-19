@@ -10,7 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from view import View
-from model import Model
+from model import Model, ModelWithHistory
 from controller import Controller
 
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
 
     controller = Controller()
-    model = Model()
+    model = ModelWithHistory()
     view = View(controller)
 
     controller.set_model(model)

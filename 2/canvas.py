@@ -1,4 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QPointF, Qt
+from PyQt5.QtGui import QPen, QPainterPath
+
 from shapes import Circle, Parabola
 
 
@@ -28,15 +31,25 @@ class Canvas(QtWidgets.QFrame):
 
         qp.scale(1.0, -1.0)
         qp.translate(0, -min_dim)
-        transforms.rescale(min_dim)
         params.rescale(min_dim)
+        transforms.rescale(min_dim)
 
-        circle = Circle(x_0=params.a, y_0=params.b, radius=params.r, transforms=transforms)
-        circle.draw(qp)
+        circle = Circle(x_0=params.a, y_0=params.b, r=params.r, transforms=transforms)
+        circ_poly = circle.polygon()
+        qp.setPen(QPen(Qt.blue))
+        qp.drawPolygon(circ_poly)
 
-        parabola = Parabola(c=params.c, d=params.d, x_0=params.a, y_0=params.b, transforms=transforms, dim=min_dim)
-        parabola.draw(qp)
-        parabola.draw_intersection(qp, circle)
+        qp.setPen(QPen(Qt.red))
+        qp.drawEllipse(QPointF(transforms.sr_center_x, transforms.sr_center_y), 5, 5)
+
+        parabola = Parabola(c=params.c, d=params.d, transforms=transforms, dim=min_dim)
+        parabola_poly = parabola.polygon()
+        qp.drawPolygon(parabola_poly)
+
+        intersection_poly = circ_poly.intersected(parabola_poly)
+        path = QPainterPath()
+        path.addPolygon(intersection_poly)
+        qp.fillPath(path, Qt.blue)
 
         qp.end()
 
