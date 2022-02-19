@@ -87,7 +87,7 @@ def get_rotation_matrix(theta: float) -> np.ndarray:
     return matrix
 
 
-def angle_in_circle(circle_center, radius, point) -> float:
+def angle_in_circle(circle_center, point) -> float:
     non_rel = point - circle_center
     x, y = non_rel
     res = atan2(y, x)
@@ -102,11 +102,37 @@ def rotate_vector_around_point(vector: np.ndarray, point: np.ndarray, radians: f
     return vector
 
 
-def chord_path(circle_center, radius, p1, p2, n, choose_longest=False):
-    start_angle = angle_in_circle(circle_center, radius, p1)
-    end_angle = angle_in_circle(circle_center, radius, p2)
+def get_chord_angle_type(circle_center, parabola_inside_circle, p1, p2, qp):
+    line_middle_point = (p1 + p2) / 2
+    parabola_mean_point = parabola_inside_circle.mean(axis=0)
 
-    if abs(end_angle - start_angle) > pi and not choose_longest:
+    line_normal = circle_center - line_middle_point
+    parabola_normal = -(line_middle_point - parabola_mean_point)
+
+    qp.drawEllipse(QPointF(*p1), 3, 3)
+    qp.drawEllipse(QPointF(*p2), 3, 3)
+    qp.drawLine(QPointF(*p1), QPointF(*p2))
+    qp.drawLine(QPointF(*line_middle_point), QPointF(*(line_middle_point + parabola_normal)))
+    qp.drawLine(QPointF(*line_middle_point), QPointF(*(line_middle_point + line_normal)))
+
+    if line_normal @ parabola_normal > 0:
+        print("Угол внутренний")
+        return "внутренний"
+    else:
+        print("Угол внешний")
+        return "внешний"
+
+
+def chord_path(circle_center, radius, p1, p2, n, angle_type="внутренний"):
+    start_angle = angle_in_circle(circle_center, p1)
+    end_angle = angle_in_circle(circle_center, p2)
+
+    # угол внешний, а нужно рисовать внутренний
+    if abs(end_angle - start_angle) > pi and angle_type == "внутренний":
+        start_angle += 2 * pi
+
+    # угол внутренний, а нужно рисовать внешний
+    if abs(end_angle - start_angle) < pi and angle_type == "внешний":
         start_angle -= 2 * pi
 
     path = []
@@ -122,13 +148,25 @@ def chord_path(circle_center, radius, p1, p2, n, choose_longest=False):
     return path
 
 
-def find_extrema(points):
-    y_prev = points[0][1]
-    for index, (x, y) in enumerate(points):
-        if y_prev > y:
-            return index
-        y_prev = y
-    raise ValueError("No extrema was found")
+def check_circle_inside_parabola(circle_center, radius, parabola, degrees_rotated):
+    theta = degrees_rotated * pi / 180
+    rotate_backwards = get_rotation_matrix(-degrees_rotated)
+    parabola = rotate_backwards @ parabola
+
+    circle_start_x = circle_center[0] - radius
+    circle_end_x = circle_center[0] + radius
+
+    parabola_x = parabola[:, 0]
+    parabola_clipped = parabola[parabola_x > circle_start_x & parabola_x < circle_end_x]
+
+    # y = y_0 + sqrt(R^2 - (x-x_0)^2)
+    circle_y = circle_center[1] + np.sqrt(radius ** 2 - (parabola_clipped[:, 0] - circle_center[0])**2)
+
+    if (circle_y <= parabola_clipped[:, 1]).all():
+        return True
+    else:
+        return False
+
 
 
 @dataclass
@@ -192,22 +230,18 @@ class Parabola:
 
     def draw_intersection(self, qp: QPainter, circle: Circle):
         points = self.get_coordinates()
-        extrema_idx = find_extrema(points)
         points = self.apply_transforms(points)
-
-        extrema = points[extrema_idx]
 
         # 1. поиск точек внутри окружности
         x_0 = circle.x_0 + self.transforms.trans_x
         y_0 = circle.y_0 + self.transforms.trans_y
         r = circle.radius * self.transforms.scale
         circle_center = np.array([x_0, y_0])
-        extrema_outside = norm(circle_center - extrema) > r
 
         distance_to_circle_center = spatial.distance.cdist(points, [circle_center])
 
         inside_circle_mask = distance_to_circle_center < r
-        inside_circle_mask = inside_circle_mask.T[0]
+        inside_circle_mask = inside_circle_mask.flatten()
 
         # 1.1 внутри круга нет точек
         if not inside_circle_mask.any():
@@ -216,17 +250,17 @@ class Parabola:
         # 2. поиск точек пересечения с окружностью
         intersections = find_intersections(inside_circle_mask, points, circle_center, r)
 
-        path = points[inside_circle_mask]
-        points = path.tolist()
-
-        qp.setPen(QPen(Qt.blue))
+        path_arr = points[inside_circle_mask].tolist()
         path = QPainterPath()
-        points = [QPointF(*i) for i in points]
-        path.addPolygon(QPolygonF(points))
+        path_arr = [QPointF(*i) for i in path_arr]
+        path.addPolygon(QPolygonF(path_arr))
         qp.fillPath(path, Qt.blue)
 
-        if len(intersections) == 2 and not extrema_outside:
-            c_path = chord_path(circle_center, r, intersections[0], intersections[1], 100)
+        if len(intersections) == 2:
+            p1 = intersections[0]
+            p2 = intersections[1]
+            angle_type = get_chord_angle_type(circle_center, points[inside_circle_mask], p1, p2, qp)
+            c_path = chord_path(circle_center, r, intersections[0], intersections[1], 100, angle_type)
             path = QPainterPath()
             c_path = [QPointF(*i) for i in c_path]
             path.addPolygon(QPolygonF(c_path))
