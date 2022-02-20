@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
 import numpy as np
-from PyQt5.QtCore import QPointF, Qt, QRectF
-from PyQt5.QtGui import QPainter, QPen, QPainterPath, QPolygonF
-from math import pi, atan2
-from transforms import apply_transform, get_translation_matrix
+from PyQt5.QtCore import QPointF
+from PyQt5.QtGui import QPolygonF
+from math import pi
+from transforms import apply_transform
 
 from model import Transformations
 
