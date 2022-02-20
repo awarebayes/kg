@@ -23,6 +23,7 @@ def get_unit_circle_points(n=100):
 
 class Drawable:
     transforms: Transformations
+    dim: int
 
     def get_transforms(self):
         return self.transforms.get_composition()
@@ -33,11 +34,15 @@ class Drawable:
     def after_get_base_points(self, points: np.ndarray) -> np.ndarray:
         return points
 
+    def after_transform(self, points: np.ndarray) -> np.ndarray:
+        return points
+
     def polygon(self):
         points = self.get_base_points()
         points = self.after_get_base_points(points)
         transform = self.get_transforms()
         points = apply_transform(transform, points)
+        points = self.after_transform(points)
         poly = QPolygonF([QPointF(*i) for i in points])
         return poly
 
@@ -48,6 +53,7 @@ class Circle(Drawable):
     y_0: float
     r: float
     transforms: Transformations
+    dim: float
 
     def scale_translate_from_parameters(self, points):
         return points * self.r + np.array([self.x_0, self.y_0])
@@ -72,7 +78,7 @@ class Parabola(Drawable):
         k = self.k
         c = self.c / dim * k
         d = self.d / dim * k
-        x = np.linspace(0, 1, int(dim * 2)) * k
+        x = np.linspace(-0.5, 1.5, int(dim)) * k
         y = c - (x - d) ** 2
 
         x *= dim / k
@@ -81,3 +87,17 @@ class Parabola(Drawable):
         points = np.vstack([x, y]).T
         return points
 
+    def after_transform(self, points: np.ndarray) -> np.ndarray:
+        points = points.tolist()
+
+        edge_points = np.array([
+            [9999, -9999],
+            [-9999, -9999]
+        ])
+        rotated_edge = apply_transform(self.transforms.get_rotation_matrix(), edge_points)
+        points.append(rotated_edge[0])
+        points.append(rotated_edge[1])
+
+        points = np.array(points)
+
+        return points

@@ -3,7 +3,7 @@ from math import pi
 from typing import Any, List
 
 import numpy as np
-from transforms import  get_rotation_matrix, get_translation_matrix, get_scale_matrix
+from transforms import get_rotation_matrix, get_translation_matrix, get_scale_matrix
 
 
 @dataclass
@@ -34,12 +34,13 @@ class Transformations:
 
     def get_composition(self):
         transforms = np.eye(3)
+        transforms = transforms @ self.get_translation_matrix()
         transforms = transforms @ get_translation_matrix(self.sr_center_x, self.sr_center_y)
         transforms = transforms @ self.get_rotation_matrix()
         transforms = transforms @ self.get_scale_matrix()
         transforms = transforms @ get_translation_matrix(-self.sr_center_x, -self.sr_center_y)
-        transforms = transforms @ self.get_translation_matrix()
         return transforms
+
 
 @dataclass
 class Parameters:
@@ -103,13 +104,6 @@ class ObservableFloat(Observable):
         self.set(new_value)
 
 
-@dataclass
-class HistoryRecord:
-    field: str
-    old_value: Any
-    new_value: Any
-
-
 class Model:
     def __init__(self):
         self.observables = {
@@ -150,6 +144,13 @@ class Model:
         return Parameters(
             **{field: self.get(field) for field in self.parameter_fields}
         )
+
+
+@dataclass
+class HistoryRecord:
+    field: str
+    old_value: Any
+    new_value: Any
 
 
 class ModelWithHistory(Model):

@@ -34,7 +34,7 @@ class Canvas(QtWidgets.QFrame):
         params.rescale(min_dim)
         transforms.rescale(min_dim)
 
-        circle = Circle(x_0=params.a, y_0=params.b, r=params.r, transforms=transforms)
+        circle = Circle(x_0=params.a, y_0=params.b, r=params.r, transforms=transforms, dim=min_dim)
         circ_poly = circle.polygon()
         qp.setPen(QPen(Qt.blue))
         qp.drawPolygon(circ_poly)
