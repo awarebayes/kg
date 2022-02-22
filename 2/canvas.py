@@ -3,6 +3,7 @@ from PyQt5.QtCore import QPointF, Qt
 from PyQt5.QtGui import QPen, QPainterPath
 
 from shapes import Circle, Parabola
+from model import chain_transforms
 
 
 class Canvas(QtWidgets.QFrame):
@@ -16,6 +17,7 @@ class Canvas(QtWidgets.QFrame):
 
         self.get_params = parent_view.controller.get_parameters
         self.get_transforms = parent_view.controller.get_transformations
+        self.get_transform_array = parent_view.controller.get_transform_array
 
     def paintEvent(self, event):
         self.redraw()
@@ -32,18 +34,19 @@ class Canvas(QtWidgets.QFrame):
         qp.scale(1.0, -1.0)
         qp.translate(0, -min_dim)
         params.rescale(min_dim)
-        transforms.rescale(min_dim)
 
         circle = Circle(x_0=params.a, y_0=params.b, r=params.r, transforms=transforms, dim=min_dim)
-        circ_poly = circle.polygon()
+        transform_array = self.get_transform_array()
+        transform_matrix = chain_transforms(min_dim, *transform_array)
+        circ_poly = circle.polygon(transform_matrix)
         qp.setPen(QPen(Qt.blue))
         qp.drawPolygon(circ_poly)
 
         qp.setPen(QPen(Qt.red))
-        qp.drawEllipse(QPointF(transforms.sr_center_x, transforms.sr_center_y), 5, 5)
+        qp.drawEllipse(QPointF(transforms.sr_center_x * min_dim, transforms.sr_center_y * min_dim), 5, 5)
 
         parabola = Parabola(c=params.c, d=params.d, transforms=transforms, dim=min_dim)
-        parabola_poly = parabola.polygon()
+        parabola_poly = parabola.polygon(transform_matrix)
         qp.drawPolygon(parabola_poly)
 
         intersection_poly = circ_poly.intersected(parabola_poly)

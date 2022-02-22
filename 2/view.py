@@ -33,8 +33,10 @@ class View(Ui_MainWindow):
             sb_callback = partial(self.controller.change_float_var, field=model_field)
             sb.valueChanged.connect(sb_callback)
 
-        self.pushButton.clicked.connect(self.controller.history_backward)
-        self.pushButton_2.clicked.connect(self.controller.history_forward)
+        self.pushButton.clicked.connect(lambda: self.controller.history_backward(lambda: self.frame.update()))
+        self.pushButton_2.clicked.connect(lambda: self.controller.history_forward(lambda: self.frame.update()))
+        self.ExitButton.clicked.connect(lambda: exit(0))
+        self.ApplyButton.clicked.connect(self.controller.apply_transforms)
 
     def toggle_can_go_forward(self, can_go):
         if can_go:
@@ -43,7 +45,7 @@ class View(Ui_MainWindow):
             self.pushButton_2.setDisabled(True)
 
     def register_view_callbacks(self, model):
-        for field in self.model_to_fields.keys():
+        for field in ["a", "b", "c", "d", "r", "sr_center_x", "sr_center_y", "transform_array"]:
             model.add_callback(field, lambda *args: self.frame.update())
         model.add_callback('can_go_forward', self.toggle_can_go_forward)
 

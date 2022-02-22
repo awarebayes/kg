@@ -18,49 +18,134 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QCheckBox" name="ShowBaseFigures">
+       <widget class="QPushButton" name="ExitButton">
         <property name="text">
-         <string>Show base figures</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Выход</string>
         </property>
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0">
+       <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0">
+        <item row="16" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>d</string>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="1">
+         <widget class="QDoubleSpinBox" name="SRCenterYSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="1">
+         <widget class="QDoubleSpinBox" name="RSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="11" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>RotScale Y center</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="TransXLabel1">
+         <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>Translate X</string>
+           <string>Назад</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Redo</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="TransYLabel1">
+        <item row="14" column="0">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>Translate Y</string>
+           <string>b</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="1">
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="TransYSB">
+          <property name="minimum">
+           <double>-0.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="10" column="0" colspan="2">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Параметры фигур</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Масштаб Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="17" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>r</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QDoubleSpinBox" name="TransXSB">
+          <property name="minimum">
+           <double>-0.500000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.050000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
          <widget class="QDoubleSpinBox" name="ScaleXSB">
           <property name="minimum">
            <double>0.010000000000000</double>
@@ -76,48 +161,37 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
-         <widget class="QLabel" name="label">
+        <item row="9" column="0" colspan="2">
+         <widget class="QPushButton" name="ApplyButton">
           <property name="text">
-           <string>a</string>
+           <string>Применить</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="TransYSB">
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="ScaleYSB">
           <property name="minimum">
-           <double>-0.500000000000000</double>
+           <double>0.010000000000000</double>
           </property>
           <property name="maximum">
-           <double>0.500000000000000</double>
+           <double>5.000000000000000</double>
           </property>
           <property name="singleStep">
-           <double>0.050000000000000</double>
+           <double>0.500000000000000</double>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="15" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
            <string>c</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>b</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>ScaleY</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
+        <item row="14" column="1">
          <widget class="QDoubleSpinBox" name="BSB">
           <property name="minimum">
            <double>0.010000000000000</double>
@@ -133,7 +207,46 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="0">
+         <widget class="QLabel" name="RotateLabel1">
+          <property name="text">
+           <string>Поворот (deg)</string>
+          </property>
+         </widget>
+        </item>
+        <item row="16" column="1">
+         <widget class="QDoubleSpinBox" name="DSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="15" column="1">
+         <widget class="QDoubleSpinBox" name="CSB">
+          <property name="minimum">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.500000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="1">
          <widget class="QDoubleSpinBox" name="RotateSB">
           <property name="minimumSize">
            <size>
@@ -152,46 +265,7 @@
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
-         <widget class="QDoubleSpinBox" name="CSB">
-          <property name="minimum">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="12" column="1">
-         <widget class="QDoubleSpinBox" name="RSB">
-          <property name="minimum">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="RotateLabel1">
-          <property name="text">
-           <string>Rotate (deg)</string>
-          </property>
-         </widget>
-        </item>
-        <item row="8" column="1">
+        <item row="13" column="1">
          <widget class="QDoubleSpinBox" name="ASB">
           <property name="minimum">
            <double>0.010000000000000</double>
@@ -207,123 +281,57 @@
           </property>
          </widget>
         </item>
+        <item row="13" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>a</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="TransScaleLabel1">
+          <property name="text">
+           <string>Масштаб X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Вперед</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="TransXLabel1">
+          <property name="text">
+           <string>Перенос  X</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="0">
+         <widget class="QLabel" name="TransYLabel1">
+          <property name="text">
+           <string>Перенос Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="12" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
            <string>RotScale X center</string>
           </property>
          </widget>
         </item>
-        <item row="12" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>r</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QDoubleSpinBox" name="ScaleYSB">
-          <property name="minimum">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="TransXSB">
-          <property name="minimum">
-           <double>-0.500000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>0.500000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.050000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>d</string>
-          </property>
-         </widget>
-        </item>
-        <item row="11" column="1">
-         <widget class="QDoubleSpinBox" name="DSB">
-          <property name="minimum">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
+        <item row="12" column="1">
          <widget class="QDoubleSpinBox" name="SRCenterXSB">
-          <property name="minimum">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="maximum">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="singleStep">
-           <double>0.100000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.500000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="TransScaleLabel1">
-          <property name="text">
-           <string>ScaleX</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>Undo</string>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <property name="autoDefault">
-           <bool>false</bool>
-          </property>
-          <property name="default">
-           <bool>false</bool>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>RotScale Y center</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QDoubleSpinBox" name="SRCenterYSB">
           <property name="minimum">
            <double>0.010000000000000</double>
           </property>
@@ -385,7 +393,7 @@
      <x>0</x>
      <y>0</y>
      <width>1100</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

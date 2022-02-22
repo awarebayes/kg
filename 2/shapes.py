@@ -22,11 +22,7 @@ def get_unit_circle_points(n=100):
 
 
 class Drawable:
-    transforms: Transformations
     dim: int
-
-    def get_transforms(self):
-        return self.transforms.get_composition()
 
     def get_base_points(self) -> np.ndarray:
         raise NotImplemented
@@ -37,10 +33,9 @@ class Drawable:
     def after_transform(self, points: np.ndarray) -> np.ndarray:
         return points
 
-    def polygon(self):
+    def polygon(self, transform):
         points = self.get_base_points()
         points = self.after_get_base_points(points)
-        transform = self.get_transforms()
         points = apply_transform(transform, points)
         points = self.after_transform(points)
         poly = QPolygonF([QPointF(*i) for i in points])
@@ -85,19 +80,14 @@ class Parabola(Drawable):
         y *= dim / k
 
         points = np.vstack([x, y]).T
+        points = points.tolist()
+        points.append([-9999, -9999])
+        points.append([9999, -9999])
+        points = np.array(points)
         return points
 
     def after_transform(self, points: np.ndarray) -> np.ndarray:
         points = points.tolist()
 
-        edge_points = np.array([
-            [9999, -9999],
-            [-9999, -9999]
-        ])
-        rotated_edge = apply_transform(self.transforms.get_rotation_matrix(), edge_points)
-        points.append(rotated_edge[0])
-        points.append(rotated_edge[1])
-
-        points = np.array(points)
 
         return points

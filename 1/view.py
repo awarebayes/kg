@@ -1,5 +1,5 @@
 from tkinter import scrolledtext, messagebox
-from prettytable import PrettyTable
+from pettytable import PrettyTable
 import tkinter as tk
 from shapes import ObjectComposition
 from flipped_canvas import FlippedCanvas

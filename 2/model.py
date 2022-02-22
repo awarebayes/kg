@@ -16,12 +16,6 @@ class Transformations:
     sr_center_x: float
     rotate: float
 
-    def rescale(self, dim):
-        self.trans_y *= dim
-        self.trans_x *= dim
-        self.sr_center_x *= dim
-        self.sr_center_y *= dim
-
     def get_rotation_matrix(self) -> np.ndarray:
         theta = self.rotate * pi / 180
         return get_rotation_matrix(theta)
@@ -32,14 +26,25 @@ class Transformations:
     def get_translation_matrix(self) -> np.ndarray:
         return get_translation_matrix(self.trans_x, self.trans_y)
 
-    def get_composition(self):
+    def get_composition(self, dim):
         transforms = np.eye(3)
-        transforms = transforms @ self.get_translation_matrix()
-        transforms = transforms @ get_translation_matrix(self.sr_center_x, self.sr_center_y)
+        trans_y = self.trans_y * dim
+        trans_x = self.trans_x * dim
+        sr_center_x = self.sr_center_x * dim
+        sr_center_y = self.sr_center_y * dim
+        transforms = transforms @ get_translation_matrix(trans_x, trans_y)
+        transforms = transforms @ get_translation_matrix(sr_center_x, sr_center_y)
         transforms = transforms @ self.get_rotation_matrix()
         transforms = transforms @ self.get_scale_matrix()
-        transforms = transforms @ get_translation_matrix(-self.sr_center_x, -self.sr_center_y)
+        transforms = transforms @ get_translation_matrix(-sr_center_x, -sr_center_y)
         return transforms
+
+
+def chain_transforms(dim, *transforms):
+    result = np.eye(3)
+    for transform in transforms:
+        result = result @ transform.get_composition(dim)
+    return result
 
 
 @dataclass
@@ -119,6 +124,7 @@ class Model:
             "c": ObservableFloat(0.5, low=0.01, high=1),
             "d": ObservableFloat(0.5, low=0.01, high=1),
             "r": ObservableFloat(0.1, low=0.01, high=1),
+            "transform_array": Observable(list()),
             "show_base_figures": Observable(False),
         }
 
@@ -149,8 +155,8 @@ class Model:
 @dataclass
 class HistoryRecord:
     field: str
-    old_value: Any
-    new_value: Any
+    old_value: list
+    new_value: list
 
 
 class ModelWithHistory(Model):
@@ -160,14 +166,6 @@ class ModelWithHistory(Model):
         self.history: List[HistoryRecord] = []
         self.future_history: List[HistoryRecord] = []
         self.observables['can_go_forward'] = Observable(False)
-
-    def set(self, field, value):
-        if field != 'can_go_forward':
-            old_value = self.get(field)
-            self.history.append(HistoryRecord(field, old_value, value))
-            self.future_history = []
-            super().set('can_go_forward', False)
-        super().set(field, value)
 
     def history_back(self):
         if self.history:
@@ -184,3 +182,6 @@ class ModelWithHistory(Model):
             self.history.append(last_action)
             if not self.future_history:
                 super().set('can_go_forward', False)
+
+    def history_log(self, field, old_value, new_value):
+        self.history.append(HistoryRecord(field, old_value, new_value))
