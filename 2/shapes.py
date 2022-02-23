@@ -6,8 +6,6 @@ from PyQt5.QtGui import QPolygonF
 from math import pi
 from transforms import apply_transform
 
-from model import Transformations
-
 
 def get_unit_circle_points(n=100):
     theta = 2 * pi / n
@@ -47,7 +45,6 @@ class Circle(Drawable):
     x_0: float
     y_0: float
     r: float
-    transforms: Transformations
     dim: float
 
     def scale_translate_from_parameters(self, points):
@@ -64,7 +61,6 @@ class Circle(Drawable):
 class Parabola(Drawable):
     c: float
     d: float
-    transforms: Transformations
     dim: float
     k: float = 10
 

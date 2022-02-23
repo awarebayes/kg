@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from model import Model, ModelWithHistory
 from transforms import apply_transform
 
+
 class Controller:
     def __init__(self):
         self.view = None
@@ -32,24 +33,17 @@ class Controller:
         self.model.history_forward()
         callback()
 
-
     def change_float_var(self, value, field):
         self.model.set(field, value)
 
     def get_parameters(self):
         return self.model.get_parameters()
 
-    def get_transformations(self):
-        return self.model.get_transformations()
-
     def get_transform_array(self):
-        return self.model.get('transform_array')
+        return self.model.get("transform_array")
 
-    def apply_transforms(self, dim):
-        old_array = self.model.get('transform_array')
-        new_array = copy.copy(old_array)
-        new_transforms = self.model.get_transformations()
-        new_array.append(new_transforms)
-        self.model.set('transform_array', new_array)
-        self.model.history_log('transform_array', old_array, new_array)
+    def register_transform(self, kind: str):
+        self.model.register_transformation(kind)
 
+    def get_sr_point(self):
+        return self.model.get("sr_center_x"), self.model.get("sr_center_y")

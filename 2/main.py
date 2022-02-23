@@ -21,7 +21,9 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
 
     controller = Controller()
-    model = ModelWithHistory(record_fields=['a', 'b', 'c', 'd', 'r', 'sr_center_x', 'sr_center_y'])
+    model = ModelWithHistory(
+        record_fields=["a", "b", "c", "d", "r", "sr_center_x", "sr_center_y"]
+    )
     view = View(controller)
 
     controller.set_model(model)

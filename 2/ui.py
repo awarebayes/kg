@@ -56,7 +56,9 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
         self.label_4.setObjectName("label_4")
         self.gridLayout_2.addWidget(self.label_4, 15, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout_2.addItem(spacerItem, 13, 0, 1, 2)
         self.RotateLabel1 = QtWidgets.QLabel(self.centralwidget)
         self.RotateLabel1.setObjectName("RotateLabel1")
@@ -117,7 +119,9 @@ class Ui_MainWindow(object):
         self.SRCenterXSB.setProperty("value", 0.5)
         self.SRCenterXSB.setObjectName("SRCenterXSB")
         self.gridLayout_2.addWidget(self.SRCenterXSB, 16, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout_2.addItem(spacerItem1, 2, 0, 1, 2)
         self.SRCenterYSB = QtWidgets.QDoubleSpinBox(self.centralwidget)
         self.SRCenterYSB.setMinimum(0.01)
@@ -139,7 +143,9 @@ class Ui_MainWindow(object):
         self.ApplyButtonRotate = QtWidgets.QPushButton(self.centralwidget)
         self.ApplyButtonRotate.setObjectName("ApplyButtonRotate")
         self.gridLayout_2.addWidget(self.ApplyButtonRotate, 12, 0, 1, 2)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout_2.addItem(spacerItem2, 10, 0, 1, 2)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setCheckable(False)
@@ -177,11 +183,15 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setObjectName("label")
         self.gridLayout_2.addWidget(self.label, 17, 0, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout_2.addItem(spacerItem3, 6, 0, 1, 2)
         self.gridLayout_2.setRowStretch(0, 1)
         self.verticalLayout.addLayout(self.gridLayout_2)
-        spacerItem4 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem4)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.frame = Canvas(self.centralwidget, self)
@@ -216,9 +226,13 @@ class Ui_MainWindow(object):
         self.TransYLabel1.setText(_translate("MainWindow", "Перенос Y"))
         self.ApplyButtonRotate.setText(_translate("MainWindow", "Применить поворот"))
         self.pushButton.setText(_translate("MainWindow", "Назад"))
-        self.ApplyButtonScale.setText(_translate("MainWindow", "Применить масштабирование"))
+        self.ApplyButtonScale.setText(
+            _translate("MainWindow", "Применить масштабирование")
+        )
         self.label_5.setText(_translate("MainWindow", "b"))
         self.label_7.setText(_translate("MainWindow", "d"))
         self.label_6.setText(_translate("MainWindow", "c"))
         self.label.setText(_translate("MainWindow", "a"))
-        self.frame.setWhatsThis(_translate("MainWindow", "<html><head/><body><p>Canvas</p></body></html>"))
+        self.frame.setWhatsThis(
+            _translate("MainWindow", "<html><head/><body><p>Canvas</p></body></html>")
+        )

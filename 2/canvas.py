@@ -1,9 +1,10 @@
+import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QPointF, Qt
 from PyQt5.QtGui import QPen, QPainterPath
 
 from shapes import Circle, Parabola
-from model import chain_transforms
+from transforms import chain_transforms, apply_transform
 
 
 class Canvas(QtWidgets.QFrame):
@@ -16,8 +17,8 @@ class Canvas(QtWidgets.QFrame):
         self.setObjectName("frame")
 
         self.get_params = parent_view.controller.get_parameters
-        self.get_transforms = parent_view.controller.get_transformations
         self.get_transform_array = parent_view.controller.get_transform_array
+        self.get_sr_point = parent_view.controller.get_sr_point
 
     def paintEvent(self, event):
         self.redraw()
@@ -26,7 +27,7 @@ class Canvas(QtWidgets.QFrame):
         qp = QtGui.QPainter()
         qp.begin(self)
         params = self.get_params()
-        transforms = self.get_transforms()
+        sr_center = np.asarray(self.get_sr_point())
         size = self.size()
         size = size.width(), size.height()
         min_dim = min(size)
@@ -35,17 +36,26 @@ class Canvas(QtWidgets.QFrame):
         qp.translate(0, -min_dim)
         params.rescale(min_dim)
 
-        circle = Circle(x_0=params.a, y_0=params.b, r=params.r, transforms=transforms, dim=min_dim)
+        circle = Circle(
+            x_0=params.a, y_0=params.b, r=params.r, dim=min_dim
+        )
         transform_array = self.get_transform_array()
         transform_matrix = chain_transforms(min_dim, *transform_array)
         circ_poly = circle.polygon(transform_matrix)
         qp.setPen(QPen(Qt.blue))
         qp.drawPolygon(circ_poly)
 
-        qp.setPen(QPen(Qt.red))
-        qp.drawEllipse(QPointF(transforms.sr_center_x * min_dim, transforms.sr_center_y * min_dim), 5, 5)
 
-        parabola = Parabola(c=params.c, d=params.d, transforms=transforms, dim=min_dim)
+        sr_center = sr_center * min_dim
+        sr_center = apply_transform(transform_matrix, sr_center.reshape(1, -1))
+        qp.setPen(QPen(Qt.red))
+        qp.drawEllipse(
+            QPointF(*sr_center[0]),
+            5,
+            5,
+        )
+
+        parabola = Parabola(c=params.c, d=params.d, dim=min_dim)
         parabola_poly = parabola.polygon(transform_matrix)
         qp.drawPolygon(parabola_poly)
 
@@ -55,5 +65,3 @@ class Canvas(QtWidgets.QFrame):
         qp.fillPath(path, Qt.blue)
 
         qp.end()
-
-

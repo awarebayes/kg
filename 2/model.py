@@ -1,50 +1,14 @@
+import copy
 from dataclasses import dataclass
-from math import pi
 from typing import Any, List
 
 import numpy as np
-from transforms import get_rotation_matrix, get_translation_matrix, get_scale_matrix
-
-
-@dataclass
-class Transformations:
-    trans_x: float
-    trans_y: float
-    scale_x: float
-    scale_y: float
-    sr_center_y: float
-    sr_center_x: float
-    rotate: float
-
-    def get_rotation_matrix(self) -> np.ndarray:
-        theta = self.rotate * pi / 180
-        return get_rotation_matrix(theta)
-
-    def get_scale_matrix(self) -> np.ndarray:
-        return get_scale_matrix(self.scale_x, self.scale_y)
-
-    def get_translation_matrix(self) -> np.ndarray:
-        return get_translation_matrix(self.trans_x, self.trans_y)
-
-    def get_composition(self, dim):
-        transforms = np.eye(3)
-        trans_y = self.trans_y * dim
-        trans_x = self.trans_x * dim
-        sr_center_x = self.sr_center_x * dim
-        sr_center_y = self.sr_center_y * dim
-        transforms = transforms @ get_translation_matrix(trans_x, trans_y)
-        transforms = transforms @ get_translation_matrix(sr_center_x, sr_center_y)
-        transforms = transforms @ self.get_rotation_matrix()
-        transforms = transforms @ self.get_scale_matrix()
-        transforms = transforms @ get_translation_matrix(-sr_center_x, -sr_center_y)
-        return transforms
-
-
-def chain_transforms(dim, *transforms):
-    result = np.eye(3)
-    for transform in transforms:
-        result = result @ transform.get_composition(dim)
-    return result
+from transforms import (
+    BaseTransform,
+    ScaleAroundPoint,
+    RotateAroundPoint,
+    TranslateTransform,
+)
 
 
 @dataclass
@@ -128,7 +92,15 @@ class Model:
             "show_base_figures": Observable(False),
         }
 
-        self.transformation_fields = ["trans_x", "trans_y", "rotate", "scale_x", "scale_y", "sr_center_x", "sr_center_y"]
+        self.transformation_fields = [
+            "trans_x",
+            "trans_y",
+            "rotate",
+            "scale_x",
+            "scale_y",
+            "sr_center_x",
+            "sr_center_y",
+        ]
         self.parameter_fields = ["a", "b", "c", "d", "r", "show_base_figures"]
 
     def add_callback(self, field, callback):
@@ -140,15 +112,8 @@ class Model:
     def set(self, field, value):
         self.observables[field].set(value)
 
-    def get_transformations(self):
-        return Transformations(
-            **{field: self.get(field) for field in self.transformation_fields}
-        )
-
     def get_parameters(self):
-        return Parameters(
-            **{field: self.get(field) for field in self.parameter_fields}
-        )
+        return Parameters(**{field: self.get(field) for field in self.parameter_fields})
 
 
 @dataclass
@@ -159,20 +124,19 @@ class HistoryRecord:
 
 
 class ModelWithHistory(Model):
-
     def __init__(self, record_fields=None):
         super().__init__()
         if record_fields is None:
             record_fields = []
         self.history: List[HistoryRecord] = []
         self.future_history: List[HistoryRecord] = []
-        self.observables['can_go_forward'] = Observable(False)
+        self.observables["can_go_forward"] = Observable(False)
         self.record_fields = record_fields
 
     def set(self, field, value):
         if field in self.record_fields:
             old_value = self.get(field)
-            self.history.append(HistoryRecord(field, old_value, value))
+            self.history_log(field, old_value, value)
         super().set(field, value)
 
     def history_back(self):
@@ -180,16 +144,41 @@ class ModelWithHistory(Model):
             last_action = self.history.pop()
             super().set(last_action.field, last_action.old_value)
             self.future_history.append(last_action)
-            super().set('can_go_forward', True)
+            super().set("can_go_forward", True)
 
     def history_forward(self):
-        assert self.get('can_go_forward')
+        assert self.get("can_go_forward")
         if self.future_history:
             last_action = self.future_history.pop()
             super().set(last_action.field, last_action.new_value)
             self.history.append(last_action)
             if not self.future_history:
-                super().set('can_go_forward', False)
+                super().set("can_go_forward", False)
 
     def history_log(self, field, old_value, new_value):
         self.history.append(HistoryRecord(field, old_value, new_value))
+
+    def register_transformation(self, kind):
+        transform = None
+        if kind == "translate":
+            transform = TranslateTransform(
+                trans_x=self.get("trans_x"), trans_y=self.get("trans_y")
+            )
+        elif kind == "scale":
+            transform = ScaleAroundPoint(
+                point_x=self.get("sr_center_x"),
+                point_y=self.get("sr_center_y"),
+                sx=self.get("scale_x"),
+                sy=self.get("scale_y"),
+            )
+        elif kind == "rotate":
+            transform = RotateAroundPoint(
+                point_x=self.get("sr_center_x"),
+                point_y=self.get("sr_center_y"),
+                deg=self.get("rotate"),
+            )
+        old_array = self.get("transform_array")
+        new_array = copy.copy(old_array)
+        new_array.append(transform)
+        self.set("transform_array", new_array)
+        self.history_log("transform_array", old_array, new_array)
