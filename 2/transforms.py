@@ -34,3 +34,12 @@ def apply_transform(transform, points):
     transformed = transform @ points.T
     transformed = transformed[[0, 1], :].T
     return transformed
+
+
+class BaseTransform:
+    def get_transform(self):
+        return np.eye(3)
+
+
+class TranslateTransform:
+    pass
