@@ -69,7 +69,7 @@ class Parabola(Drawable):
         k = self.k
         c = self.c / dim * k
         d = self.d / dim * k
-        x = np.linspace(-0.5, 1.5, int(dim)) * k
+        x = np.linspace(0, 1, int(dim)) * k
         y = c - (x - d) ** 2
 
         x *= dim / k
@@ -77,8 +77,8 @@ class Parabola(Drawable):
 
         points = np.vstack([x, y]).T
         points = points.tolist()
-        points.append([-9999, -9999])
         points.append([9999, -9999])
+        points.append([-9999, -9999])
         points = np.array(points)
         return points
 

@@ -47,10 +47,10 @@ class Canvas(QtWidgets.QFrame):
 
 
         sr_center = sr_center * min_dim
-        sr_center = apply_transform(transform_matrix, sr_center.reshape(1, -1))
+        # sr_center = apply_transform(transform_matrix, sr_center.reshape(1, -1))
         qp.setPen(QPen(Qt.red))
         qp.drawEllipse(
-            QPointF(*sr_center[0]),
+            QPointF(*sr_center),
             5,
             5,
         )
