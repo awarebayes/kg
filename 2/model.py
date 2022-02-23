@@ -131,7 +131,6 @@ class Model:
         self.transformation_fields = ["trans_x", "trans_y", "rotate", "scale_x", "scale_y", "sr_center_x", "sr_center_y"]
         self.parameter_fields = ["a", "b", "c", "d", "r", "show_base_figures"]
 
-
     def add_callback(self, field, callback):
         self.observables[field].add_callback(callback)
 
@@ -155,17 +154,26 @@ class Model:
 @dataclass
 class HistoryRecord:
     field: str
-    old_value: list
-    new_value: list
+    old_value: Any
+    new_value: Any
 
 
 class ModelWithHistory(Model):
 
-    def __init__(self):
+    def __init__(self, record_fields=None):
         super().__init__()
+        if record_fields is None:
+            record_fields = []
         self.history: List[HistoryRecord] = []
         self.future_history: List[HistoryRecord] = []
         self.observables['can_go_forward'] = Observable(False)
+        self.record_fields = record_fields
+
+    def set(self, field, value):
+        if field in self.record_fields:
+            old_value = self.get(field)
+            self.history.append(HistoryRecord(field, old_value, value))
+        super().set(field, value)
 
     def history_back(self):
         if self.history:

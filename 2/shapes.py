@@ -87,7 +87,4 @@ class Parabola(Drawable):
         return points
 
     def after_transform(self, points: np.ndarray) -> np.ndarray:
-        points = points.tolist()
-
-
         return points
