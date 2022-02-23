@@ -36,7 +36,7 @@ class View(Ui_MainWindow):
         self.pushButton.clicked.connect(lambda: self.controller.history_backward(lambda: self.frame.update()))
         self.pushButton_2.clicked.connect(lambda: self.controller.history_forward(lambda: self.frame.update()))
         self.ExitButton.clicked.connect(lambda: exit(0))
-        self.ApplyButton.clicked.connect(self.controller.apply_transforms)
+        self.ApplyButtonScale.clicked.connect(self.controller.apply_transforms)
 
     def toggle_can_go_forward(self, can_go):
         if can_go:
