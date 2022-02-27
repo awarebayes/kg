@@ -76,10 +76,12 @@ class Parabola(Drawable):
         y *= dim / k
 
         points = np.vstack([x, y]).T
+
         points = points.tolist()
         points.append([9999, -9999])
         points.append([-9999, -9999])
         points = np.array(points)
+
         return points
 
     def after_transform(self, points: np.ndarray) -> np.ndarray:

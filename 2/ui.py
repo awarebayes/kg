@@ -102,7 +102,7 @@ class Ui_MainWindow(object):
         self.RSB.setMinimum(0.01)
         self.RSB.setMaximum(1.0)
         self.RSB.setSingleStep(0.1)
-        self.RSB.setProperty("value", 0.5)
+        self.RSB.setProperty("value", 0.1)
         self.RSB.setObjectName("RSB")
         self.gridLayout_2.addWidget(self.RSB, 21, 1, 1, 1)
         self.DSB = QtWidgets.QDoubleSpinBox(self.centralwidget)

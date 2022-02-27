@@ -115,6 +115,9 @@ class Model:
     def get_parameters(self):
         return Parameters(**{field: self.get(field) for field in self.parameter_fields})
 
+    def get_state(self):
+        return {k: self.get(k) for k in self.observables.keys()}
+
 
 @dataclass
 class HistoryRecord:
@@ -132,9 +135,10 @@ class ModelWithHistory(Model):
         self.future_history: List[HistoryRecord] = []
         self.observables["can_go_forward"] = Observable(False)
         self.record_fields = record_fields
+        self.muted = False
 
     def set(self, field, value):
-        if field in self.record_fields:
+        if field in self.record_fields and not self.muted:
             old_value = self.get(field)
             self.history_log(field, old_value, value)
         super().set(field, value)

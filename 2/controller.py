@@ -28,10 +28,14 @@ class Controller:
     def history_backward(self, callback):
         self.model.history_back()
         callback()
+        state = self.model.get_state()
+        self.view.update_sliders(state)
 
     def history_forward(self, callback):
         self.model.history_forward()
         callback()
+        state = self.model.get_state()
+        self.view.update_sliders(state)
 
     def change_float_var(self, value, field):
         self.model.set(field, value)
@@ -47,3 +51,9 @@ class Controller:
 
     def get_sr_point(self):
         return self.model.get("sr_center_x"), self.model.get("sr_center_y")
+
+    def mute_model(self):
+        self.model.muted = True
+
+    def unmute_model(self):
+        self.model.muted = False

@@ -48,6 +48,13 @@ class View(Ui_MainWindow):
         else:
             self.pushButton_2.setDisabled(True)
 
+    def update_sliders(self, state):
+        self.controller.mute_model()
+        for model_field, view_field in self.model_to_fields.items():
+            view_attr = getattr(self, f"{view_field}SB")
+            view_attr.setValue(state[model_field])
+        self.controller.unmute_model()
+
     def register_view_callbacks(self, model):
         for field in [
             "a",
@@ -60,6 +67,8 @@ class View(Ui_MainWindow):
             "transform_array",
         ]:
             model.add_callback(field, lambda *args: self.frame.update())
+
+
         model.add_callback("can_go_forward", self.toggle_can_go_forward)
 
     def setupUi(self, MainWindow):
