@@ -1,5 +1,4 @@
 class StepCounter:
-
     def __init__(self):
         self.steps = 0
         self.y_saved = None
@@ -21,4 +20,3 @@ class WuStepCounter(StepCounter):
         if self.calls % 2 == 0:
             super().count_step(x, y, intensity)
         self.calls += 1
-

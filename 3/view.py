@@ -9,6 +9,8 @@ from PyQt5.QtWidgets import QWidget, QColorDialog, QGraphicsScene, QMessageBox
 from matplotlib import pyplot as plt
 
 from algorithms import draw_line
+from subprocess import Popen, PIPE
+
 
 from ui import Ui_MainWindow
 from step_counter import StepCounter, WuStepCounter
@@ -30,7 +32,6 @@ def change_bg_color(widget: QWidget, color):
 
 
 class View(Ui_MainWindow):
-
     def __init__(self):
         super().__init__()
         self.scene = None
@@ -50,13 +51,21 @@ class View(Ui_MainWindow):
 
     def connect(self):
         self.change_bg_color_button.clicked.connect(self.on_change_bg_button_clicked)
-        self.change_line_color_button.clicked.connect(self.on_change_line_button_clicked)
+        self.change_line_color_button.clicked.connect(
+            self.on_change_line_button_clicked
+        )
         self.plot_line_button.clicked.connect(self.on_draw_line_button_clicked)
         self.clear_buton.clicked.connect(self.on_clear_button_clicked)
         self.plot_sun_button.clicked.connect(self.on_plot_sun_button_clicked)
-        self.time_comparison_button.clicked.connect(self.on_time_comparison_button_clicked)
-        self.step_comparison_button.clicked.connect(self.on_step_comparison_button_clicked)
-        self.all_step_comparison_button.clicked.connect(self.on_compare_all_button_clicked)
+        self.time_comparison_button.clicked.connect(
+            self.on_time_comparison_button_clicked
+        )
+        self.step_comparison_button.clicked.connect(
+            self.on_step_comparison_button_clicked
+        )
+        self.all_step_comparison_button.clicked.connect(
+            self.on_compare_all_button_clicked
+        )
         self.action.triggered.connect(lambda: exit(0))
 
     def update_color_preview(self):
@@ -106,7 +115,9 @@ class View(Ui_MainWindow):
         end = self.line_end_x.value(), self.line_end_y.value()
 
         if start == end:
-            QMessageBox.information(None, "Info", "Отрисована только единственная точка")
+            QMessageBox.information(
+                None, "Info", "Отрисована только единственная точка"
+            )
             place_pixel(*start)
             return
 
@@ -120,7 +131,9 @@ class View(Ui_MainWindow):
         place_pixel = self.get_place_pixel()
 
         if algorithm != "Из Библиотеки":
-            draw_line_overload = lambda start_, end_: draw_line(algorithm, start_, end_, place_pixel)
+            draw_line_overload = lambda start_, end_: draw_line(
+                algorithm, start_, end_, place_pixel
+            )
         else:
             draw_line_overload = self.draw_line_with_library
 
@@ -142,49 +155,40 @@ class View(Ui_MainWindow):
             theta += d_theta
 
     def on_time_comparison_button_clicked(self):
-        algos = ["ЦДА", "Брезенхем",  "Брезенхем Целочисленный", 'Брезенхем Сглаживание', "Ву"]
 
-        time_comp = {algo: [] for algo in algos}
-        rad = 300
+        time_comp = {}
+        process = Popen("./a.out", stdout=PIPE)
+        output, err = process.communicate()
+        exit_code = process.wait()
 
-        def dummy(x, y, intensity=0):
-            pass
-
-        for algo in algos:
-            theta = 0
-            while theta <= 90:
-                radians = math.radians(theta)
-                r_vector = math.cos(radians) * rad, math.sin(radians) * rad
-                r_vector = int(r_vector[0]), int(r_vector[1])
-
-                start = time.time_ns()
-                draw_line(algo, (0, 0), r_vector, dummy)
-                end = time.time_ns()
-
-                elapsed = end - start
-                theta += 1
-                time_comp[algo].append(elapsed)
+        for line in output.decode().splitlines():
+            line = line.split()
+            time_comp[line[0]] = float(line[1])
 
         fig = plt.figure(figsize=(15, 10))
         plt.bar(time_comp.keys(), [np.mean(v) for v in time_comp.values()])
         plt.xlabel(f"Алгоритм")
         plt.ylabel(f"Время (наносекунды)")
-        plt.title(f"Время выполнения, отрисовка не учитывается, усреднено по градусу от [0..90]")
+        plt.title(
+            f"Время выполнения, отрисовка не учитывается, усреднено по градусу от [0..90]"
+        )
         plt.show()
-
 
     def on_compare_all_button_clicked(self):
         d_theta = 1
         thetas = range(0, 91)
 
-        algos = ["ЦДА", "Брезенхем",  "Брезенхем Целочисленный", 'Брезенхем Сглаживание', "Ву"]
+        algos = [
+            "ЦДА",
+            "Брезенхем",
+            "Брезенхем Целочисленный",
+            "Брезенхем Сглаживание",
+            "Ву",
+        ]
         steps = {algo: [] for algo in algos}
 
         time_comp = {algo: [] for algo in algos}
         rad = 300
-
-        def dummy(x, y, intensity=0):
-            pass
 
         for algo in algos:
             theta = 0
@@ -211,7 +215,11 @@ class View(Ui_MainWindow):
         algorithm = self.algorithm_selection.currentText()
 
         if algorithm == "Из Библиотеки":
-            QMessageBox.critical(None, "Critical", "Нельзя измерить кол-во шагов для алгоритма из библиотеки")
+            QMessageBox.critical(
+                None,
+                "Critical",
+                "Нельзя измерить кол-во шагов для алгоритма из библиотеки",
+            )
             return
 
         d_theta = 1

@@ -1,16 +1,5 @@
 from math import floor
 from numpy import sign
-from numba import jit
-
-
-def draw_vertical_line(start, end, place_pixel):
-    x_1, y_1 = start
-    x_2, y_2 = end
-    assert x_1 == x_2
-    x = x_1
-
-    for y in range(min(y_1, y_2), max(y_1, y_2)):
-        place_pixel(x, y)
 
 
 def dda(start, end, place_pixel):
@@ -23,11 +12,11 @@ def dda(start, end, place_pixel):
     dx = (x_2 - x_1) / length
     dy = (y_2 - y_1) / length
 
-    x = x_1 + 0.5 * sign(dx)
-    y = y_1 + 0.5 * sign(dx)
+    x = x_1  # + 0.5 * sign(dx)
+    y = y_1  # + 0.5 * sign(dx)
 
     for i in range(0, length):
-        place_pixel(floor(x), floor(y))
+        place_pixel(round(x), round(y))
         x += dx
         y += dy
 
@@ -139,8 +128,8 @@ def wu_x_line(start, end, place_pixel, i_max=255):
     x_1, y_1 = start
     x_2, y_2 = end
 
-    dx = (x_2 - x_1)
-    dy = (y_2 - y_1)
+    dx = x_2 - x_1
+    dy = y_2 - y_1
     step = 1
     tan = dx / dy
 
@@ -149,23 +138,25 @@ def wu_x_line(start, end, place_pixel, i_max=255):
         step *= -1
 
     x = x_1
+    place_pixel(x_1, y_1)
     for y in range(y_1, y_2, step):
         d_1 = x - floor(x)
         d_2 = 1 - d_1
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(int(x), y, intensity=int_2)
-        place_pixel(int(x) + 1, y, intensity=int_1)
+        place_pixel(round(x), y, intensity=int_2)
+        place_pixel(round(x) + 1, y, intensity=int_1)
         x += tan
+    place_pixel(x_2, y_2)
 
 
 def wu_y_line(start, end, place_pixel, i_max=255):
     x_1, y_1 = start
     x_2, y_2 = end
 
-    dx = (x_2 - x_1)
-    dy = (y_2 - y_1)
+    dx = x_2 - x_1
+    dy = y_2 - y_1
     step = 1
     tan = dy / dx
 
@@ -174,15 +165,17 @@ def wu_y_line(start, end, place_pixel, i_max=255):
         step *= -1
 
     y = y_1
+    place_pixel(x_1, y_1)
     for x in range(x_1, x_2, step):
         d_1 = y - floor(y)
         d_2 = 1 - d_1
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(x, int(y), int_2)
-        place_pixel(x + 1, int(y), int_1)
+        place_pixel(x, round(y), int_2)
+        place_pixel(x + 1, round(y), int_1)
         y += tan
+    place_pixel(x_2, y_2)
 
 
 def wu(start, end, place_pixel):
@@ -198,7 +191,7 @@ def wu(start, end, place_pixel):
     elif dy == 0:
         for x in range(min(x_1, x_2), max(x_1, x_2)):
             place_pixel(x, y_1)
-    elif dy > dx:
+    elif dy >= dx:
         wu_x_line(start, end, place_pixel)
     else:
         wu_y_line(start, end, place_pixel)
@@ -212,7 +205,7 @@ def draw_line(algorithm_name, start, end, place_pixel):
         algorithm = bresenham_float
     elif algorithm_name == "Брезенхем Целочисленный":
         algorithm = bresenham_integer
-    elif algorithm_name == 'Брезенхем Сглаживание':
+    elif algorithm_name == "Брезенхем Сглаживание":
         algorithm = bresenham_smooth
     elif algorithm_name == "Ву":
         algorithm = wu

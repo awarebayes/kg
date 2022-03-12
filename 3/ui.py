@@ -124,7 +124,9 @@ class Ui_MainWindow(object):
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
         self.gridLayout.addWidget(self.label_13, 10, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout.addItem(spacerItem, 11, 0, 1, 1)
         self.sun_step_deg = QtWidgets.QDoubleSpinBox(self.centralwidget)
         font = QtGui.QFont()
@@ -222,9 +224,13 @@ class Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 5, 0, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout.addItem(spacerItem1, 7, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridLayout.addItem(spacerItem2, 3, 0, 1, 1)
         self.plot_sun_button = QtWidgets.QPushButton(self.centralwidget)
         font = QtGui.QFont()
@@ -267,21 +273,31 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.time_comparison_button.setText(_translate("MainWindow", "Сравнить Время"))
-        self.all_step_comparison_button.setText(_translate("MainWindow", "Сравнить ступенчатость Всех"))
+        self.all_step_comparison_button.setText(
+            _translate("MainWindow", "Сравнить ступенчатость Всех")
+        )
         self.label_6.setText(_translate("MainWindow", "Конец"))
         self.algorithm_selection.setItemText(0, _translate("MainWindow", "ЦДА"))
         self.algorithm_selection.setItemText(1, _translate("MainWindow", "Брезенхем"))
-        self.algorithm_selection.setItemText(2, _translate("MainWindow", "Брезенхем Целочисленный"))
-        self.algorithm_selection.setItemText(3, _translate("MainWindow", "Брезенхем Сглаживание"))
+        self.algorithm_selection.setItemText(
+            2, _translate("MainWindow", "Брезенхем Целочисленный")
+        )
+        self.algorithm_selection.setItemText(
+            3, _translate("MainWindow", "Брезенхем Сглаживание")
+        )
         self.algorithm_selection.setItemText(4, _translate("MainWindow", "Ву"))
-        self.algorithm_selection.setItemText(5, _translate("MainWindow", "Из Библиотеки"))
+        self.algorithm_selection.setItemText(
+            5, _translate("MainWindow", "Из Библиотеки")
+        )
         self.clear_buton.setText(_translate("MainWindow", "Очистить Всё"))
         self.label_7.setText(_translate("MainWindow", "X:"))
         self.label_9.setText(_translate("MainWindow", "Y:"))
         self.label_3.setText(_translate("MainWindow", "Алгоритм"))
         self.change_line_color_button.setText(_translate("MainWindow", "Поменять"))
         self.plot_line_button.setText(_translate("MainWindow", "Построить"))
-        self.step_comparison_button.setText(_translate("MainWindow", "Сравнить ступенчатость"))
+        self.step_comparison_button.setText(
+            _translate("MainWindow", "Сравнить ступенчатость")
+        )
         self.label_13.setText(_translate("MainWindow", "Радиус"))
         self.label_12.setText(_translate("MainWindow", "Шаг Угла (deg)"))
         self.label_8.setText(_translate("MainWindow", "Построить Солнышко"))
@@ -299,6 +315,7 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
