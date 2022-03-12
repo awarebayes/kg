@@ -168,7 +168,7 @@ class View(Ui_MainWindow):
         fig = plt.figure(figsize=(15, 10))
         plt.bar(time_comp.keys(), [np.mean(v) for v in time_comp.values()])
         plt.xlabel(f"Алгоритм")
-        plt.ylabel(f"Время (наносекунды)")
+        plt.ylabel(f"Время (секунда * 10^6)")
         plt.title(
             f"Время выполнения, отрисовка не учитывается, усреднено по градусу от [0..90]"
         )
