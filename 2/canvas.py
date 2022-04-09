@@ -36,11 +36,12 @@ class Canvas(QtWidgets.QFrame):
         qp.translate(0, -min_dim)
         params.rescale(min_dim)
 
+        transform_array = self.get_transform_array()
+        transform_matrix = chain_transforms(min_dim, *transform_array)
+
         circle = Circle(
             x_0=params.a, y_0=params.b, r=params.r, dim=min_dim
         )
-        transform_array = self.get_transform_array()
-        transform_matrix = chain_transforms(min_dim, *transform_array)
         circ_poly = circle.polygon(transform_matrix)
         qp.setPen(QPen(Qt.blue))
         qp.drawPolygon(circ_poly)

@@ -1,3 +1,4 @@
+from abc import ABC
 from dataclasses import dataclass
 
 import numpy as np
@@ -19,7 +20,7 @@ def get_unit_circle_points(n=100):
     return points
 
 
-class Drawable:
+class Drawable(ABC):
     dim: int
 
     def get_base_points(self) -> np.ndarray:

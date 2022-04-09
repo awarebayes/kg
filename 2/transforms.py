@@ -6,7 +6,10 @@ import numpy as np
 
 
 def get_translation_matrix(m, n):
-    matrix = np.array([[1, 0, 0], [0, 1, 0], [m, n, 1]])
+    matrix = np.array([
+        [1, 0, 0],
+        [0, 1, 0],
+        [m, n, 1]])
     return matrix
 
 
@@ -22,7 +25,10 @@ def get_rotation_matrix(theta):
 
 
 def get_scale_matrix(sx, sy):
-    matrix = np.array([[sx, 0, 0], [0, sy, 0], [0, 0, 1]])
+    matrix = np.array([
+        [sx, 0, 0],
+        [0, sy, 0],
+        [0, 0, 1]])
     return matrix
 
 

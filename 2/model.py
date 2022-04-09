@@ -161,6 +161,7 @@ class ModelWithHistory(Model):
 
     def history_log(self, field, old_value, new_value):
         self.history.append(HistoryRecord(field, old_value, new_value))
+        self.future_history = []
 
     def register_transformation(self, kind):
         transform = None
