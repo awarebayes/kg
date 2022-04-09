@@ -29,10 +29,10 @@ def mark_border(edges_arr: List[Edge], drawer: Drawer):
         while y < y_max:
             x = dx / dy * (y - line.y1) + line.x1
             x_int = round(x)
-            if drawer.check_color(x_int + 1, y) == PixelColor.EDGE:
-                drawer.pixel_edge(x_int + 2, y)
-            else:
+            if drawer.check_color(x_int, y) == PixelColor.EDGE:
                 drawer.pixel_edge(x_int + 1, y)
+            else:
+                drawer.pixel_edge(x_int, y)
 
             y += 1
 

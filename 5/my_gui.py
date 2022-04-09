@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import QGraphicsScene, QTableWidgetItem
 from dataclasses import dataclass
 from my_types import TwoPointEdge, PixelColor, two_point_edge_to_edge, Drawer, Point
 from algorithms import fill_flag
+from sys import exit
 
 EPS = 10
 
