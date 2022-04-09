@@ -145,8 +145,8 @@ def wu_x_line(start, end, place_pixel, i_max=255):
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(round(x), y, intensity=int_2)
-        place_pixel(round(x) + 1, y, intensity=int_1)
+        place_pixel(floor(x), y, intensity=int_2)
+        place_pixel(floor(x) + 1, y, intensity=int_1)
         x += tan
     place_pixel(x_2, y_2)
 
@@ -172,8 +172,8 @@ def wu_y_line(start, end, place_pixel, i_max=255):
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(x, round(y), int_2)
-        place_pixel(x + 1, round(y), int_1)
+        place_pixel(x, floor(y), int_2)
+        place_pixel(x + 1, floor(y), int_1)
         y += tan
     place_pixel(x_2, y_2)
 
