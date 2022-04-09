@@ -10,7 +10,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QGraphicsScene, QTableWidgetItem
 from dataclasses import dataclass
 from my_types import TwoPointEdge, PixelColor, two_point_edge_to_edge, Drawer, Point
-from algorithms import fill_flag
+from algorithms import method_with_seed
 from sys import exit
 
 EPS = 10
@@ -20,9 +20,11 @@ EPS = 10
 class Model:
     edges: List[TwoPointEdge]
     point_count: int
+    seed: Point = (0, 0)
 
     def reset(self):
         self.edges = []
+        self.seed = (0, 0)
         self.point_count = 0
 
 
@@ -58,7 +60,7 @@ def hexagon(init_theta, radius) -> List[TwoPointEdge]:
     return edges
 
 
-def dummy_drawer():
+def dummy_drawer(canvas_width, canvas_height):
     def dummy_place(x1, y1, x2, y2):
         pass
 
@@ -66,7 +68,12 @@ def dummy_drawer():
         dummy_place,
         dummy_place,
         dummy_place,
+        dummy_place,
         defaultdict(lambda: PixelColor.BACKGROUND),
+        canvas_x_low=-canvas_width / 2,
+        canvas_x_high=+canvas_width / 2,
+        canvas_y_low=-canvas_height / 2,
+        canvas_y_high=+canvas_height / 2,
     )
 
 
@@ -88,6 +95,7 @@ class GuiMainWin(Ui_MainWindow):
         self.tableWidget.setRowCount(100)
         self.connect()
         self.change_bg_color()
+        self.set_seed(0, 0)
 
     def add_point(self, x, y):
         index = self.model.point_count
@@ -151,10 +159,15 @@ class GuiMainWin(Ui_MainWindow):
 
     def get_drawer(self):
         return Drawer(
-            self.get_draw_edge(),
-            self.get_draw_inside(),
-            self.get_draw_bg(),
-            defaultdict(lambda: PixelColor.BACKGROUND),
+            _line_edge=self.get_draw_edge(),
+            _line_inside=self.get_draw_inside(),
+            _line_mark=self.get_draw_inside(),
+            _line_bg=self.get_draw_bg(),
+            buffer=defaultdict(lambda: PixelColor.BACKGROUND),
+            canvas_x_low=-self.graphicsView.size().width() / 2,
+            canvas_x_high=+self.graphicsView.size().width() / 2,
+            canvas_y_low=-self.graphicsView.size().height() / 2,
+            canvas_y_high=+self.graphicsView.size().height() / 2,
         )
 
     def fill(self):
@@ -166,7 +179,7 @@ class GuiMainWin(Ui_MainWindow):
         delay = 0
         if self.delay_checkbox.isChecked():
             delay = self.delay_inp.value()
-        fill_flag(edges, drawer, delay)
+        method_with_seed(edges, drawer, self.model.seed, delay)
 
     def transform(self, x, y):
         x -= self.graphicsView.pos().x()
@@ -189,7 +202,7 @@ class GuiMainWin(Ui_MainWindow):
         if not warmup:
             self.time_benchmark(warmup=True, trials=5)
 
-        radius = list(range(1, 100, 5))
+        radius = list(range(5, 100, 5))
         area = list(map(hex_area, radius))
         time_elapsed = []
         for r in radius:
@@ -198,7 +211,10 @@ class GuiMainWin(Ui_MainWindow):
                 fig = hexagon(5, r)
                 edges = list(map(two_point_edge_to_edge, fig))
                 time_start = time.time()
-                fill_flag(edges, dummy_drawer(), 0)
+                method_with_seed(edges,
+                                 dummy_drawer(self.graphicsView.size().width(), self.graphicsView.size().height()),
+                                 (0, 0),
+                                 0)
                 total += time.time() - time_start
             time_elapsed.append(total / trials)
 
@@ -212,3 +228,9 @@ class GuiMainWin(Ui_MainWindow):
 
         plt.plot(area, time_elapsed, linewidth=1, linestyle="-", color="blue")
         plt.show()
+
+    def set_seed(self, x, y):
+        bg_color = color_map[self.bg_color.currentText()]
+        self.scene.addEllipse(*self.model.seed, 5, 5, pen=bg_color)
+        self.model.seed = (x, y)
+        self.scene.addEllipse(*self.model.seed, 5, 5, pen=Qt.darkCyan)

@@ -55,7 +55,6 @@ def bresenham_float(start, end, place_pixel):
                 x += sign_dx
             error += dy / dx
 
-
 def bresenham_integer(start, end, place_pixel):
     x_1, y_1 = start
     x_2, y_2 = end

@@ -38,9 +38,15 @@ class View(Ui_MainWindow):
             lambda: self.controller.history_forward(lambda: self.frame.update())
         )
         self.ExitButton.clicked.connect(lambda: exit(0))
-        self.ApplyButtonTranslate.clicked.connect(lambda: self.controller.register_transform("translate"))
-        self.ApplyButtonScale.clicked.connect(lambda: self.controller.register_transform("scale"))
-        self.ApplyButtonRotate.clicked.connect(lambda: self.controller.register_transform("rotate"))
+        self.ApplyButtonTranslate.clicked.connect(
+            lambda: self.controller.register_transform("translate")
+        )
+        self.ApplyButtonScale.clicked.connect(
+            lambda: self.controller.register_transform("scale")
+        )
+        self.ApplyButtonRotate.clicked.connect(
+            lambda: self.controller.register_transform("rotate")
+        )
 
     def toggle_can_go_forward(self, can_go):
         if can_go:
@@ -67,7 +73,6 @@ class View(Ui_MainWindow):
             "transform_array",
         ]:
             model.add_callback(field, lambda *args: self.frame.update())
-
 
         model.add_callback("can_go_forward", self.toggle_can_go_forward)
 
