@@ -63,6 +63,7 @@ void bresenhem_float(int x_1, int y_1, int x_2, int y_2)
 	double error = dy / dx - 0.5;
 	double x = x_1;
 	double y = y_1;
+	double tan = dy / dx;
 
 	for (int i = 0; i < dx; i++)
 	{
@@ -120,7 +121,7 @@ void bresenhem_int(int x_1, int y_1, int x_2, int y_2)
 				y += sign_dy;
 			error -=  2 * dx;
 		}
-		if (error <= 0)
+		else
 		{
 			if (exchanged)
 				y += sign_dy;
@@ -130,7 +131,6 @@ void bresenhem_int(int x_1, int y_1, int x_2, int y_2)
 		}
 	}
 }
-
 
 
 void bresenhem_smooth(int x_1, int y_1, int x_2, int y_2)
@@ -267,7 +267,7 @@ double benchmark(void draw_func(int, int, int, int))
 		double radians = deg * M_PI / 180;
 		int end_x = (int)(cos(radians) * 300);
 		int end_y = (int)(sin(radians) * 300);
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			clock_t start = clock();
 			draw_func(0, 0, end_x, end_y);
@@ -284,6 +284,7 @@ double benchmark(void draw_func(int, int, int, int))
 
 int main()
 {
+    benchmark(dda);
 	printf("dda %f\n", benchmark(dda));
 	printf("bresenhem_float %f\n", benchmark(bresenhem_float));
 	printf("bresenhem_int %f\n", benchmark(bresenhem_int));

@@ -105,9 +105,9 @@ def bresenham_smooth(start, end, place_pixel, I=255):
         dx, dy = dy, dx
         exchanged = True
 
-    tan = dy / dx * I
-    error = I / 2
-    W = I - tan
+    tan: float = dy / dx * I  # tan лежит в [0, 255]
+    error: float = I / 2
+    W: float = I - tan  # По идее будет в [-255, 255]
     x, y = x_1, y_1
 
     for _ in range(dx):

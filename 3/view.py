@@ -154,6 +154,7 @@ class View(Ui_MainWindow):
 
             theta += d_theta
 
+
     def on_time_comparison_button_clicked(self):
 
         time_comp = {}
