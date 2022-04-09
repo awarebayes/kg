@@ -202,8 +202,8 @@ void wu_x_line(int x_1, int y_1, int x_2, int y_2)
 		x += tan;
 		int int_1 = round(fabs(d_1) * I);
 		int int_2 = round(fabs(d_2) * I);
-		place_pixeli( floor(x), y, int_1);
-		place_pixeli(floor(x)+1, y, int_2);
+		place_pixeli( (int)floor(x), y, int_1);
+		place_pixeli((int)floor(x)+1, y, int_2);
 	}
 }
 

@@ -128,54 +128,48 @@ def wu_x_line(start, end, place_pixel, i_max=255):
     x_1, y_1 = start
     x_2, y_2 = end
 
+    if y_1 > y_2:
+        x_1, y_1, x_2, y_2 = x_2, y_2, x_1, y_1
+
     dx = x_2 - x_1
     dy = y_2 - y_1
-    step = 1
     tan = dx / dy
 
-    if y_1 > y_2:
-        tan *= -1
-        step *= -1
-
     x = x_1
-    place_pixel(x_1, y_1)
-    for y in range(y_1, y_2, step):
-        d_1 = x - floor(x)
+    for y in range(y_1, y_2, 1):
+        x_floor = floor(x)
+        d_1 = x - x_floor
         d_2 = 1 - d_1
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(floor(x), y, intensity=int_2)
-        place_pixel(floor(x) + 1, y, intensity=int_1)
+        place_pixel(x_floor, y, intensity=int_2)
+        place_pixel(x_floor + 1, y, intensity=int_1)
         x += tan
-    place_pixel(x_2, y_2)
 
 
 def wu_y_line(start, end, place_pixel, i_max=255):
     x_1, y_1 = start
     x_2, y_2 = end
 
+    if x_1 > x_2:
+        x_1, y_1, x_2, y_2 = x_2, y_2, x_1, y_1
+
     dx = x_2 - x_1
     dy = y_2 - y_1
-    step = 1
     tan = dy / dx
 
-    if x_1 > x_2:
-        tan *= -1
-        step *= -1
-
     y = y_1
-    place_pixel(x_1, y_1)
-    for x in range(x_1, x_2, step):
-        d_1 = y - floor(y)
+    for x in range(x_1, x_2, 1):
+        y_floor = floor(y)
+        d_1 = y - y_floor
         d_2 = 1 - d_1
         int_1 = round(abs(d_1) * i_max)
         int_2 = round(abs(d_2) * i_max)
 
-        place_pixel(x, floor(y), int_2)
-        place_pixel(x + 1, floor(y), int_1)
+        place_pixel(x, y_floor, int_2)
+        place_pixel(x, y_floor + 1, int_1)
         y += tan
-    place_pixel(x_2, y_2)
 
 
 def wu(start, end, place_pixel):
