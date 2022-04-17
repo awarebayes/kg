@@ -98,7 +98,6 @@ class MainWin(QtWidgets.QMainWindow):
             self.ui.set_seed(x, y)
 
 
-
 if __name__ == "__main__":
     import sys
 

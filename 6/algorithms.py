@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 
 from my_types import Drawer, Point
 from my_types import Edge, PixelColor
-from lines import bresenham_integer, wu, dda
+from lines import dda
 
 
 def wait(delay):
@@ -56,16 +56,21 @@ def method_with_seed(edges: List[Edge], drawer: Drawer, seed_pixel: Point, delay
         while x <= xr:
             f = 0
 
-            while drawer.check_color(x, y) != PixelColor.EDGE and \
-                    drawer.check_color(x, y) != PixelColor.FILL and \
-                    x < xr:
-                if f == 0: f = 1
+            while (
+                drawer.check_color(x, y) != PixelColor.EDGE
+                and drawer.check_color(x, y) != PixelColor.FILL
+                and x < xr
+            ):
+                if f == 0:
+                    f = 1
                 x = x + 1
 
-
-
             if f == 1:
-                if x == xr and drawer.check_color(x, y) != PixelColor.FILL and drawer.check_color(x, y) != PixelColor.EDGE:
+                if (
+                    x == xr
+                    and drawer.check_color(x, y) != PixelColor.FILL
+                    and drawer.check_color(x, y) != PixelColor.EDGE
+                ):
                     stack.append([x, y])
                 else:
                     stack.append([x - 1, y])
@@ -73,7 +78,10 @@ def method_with_seed(edges: List[Edge], drawer: Drawer, seed_pixel: Point, delay
 
             # Исследуем прерывание интервала
             wx = x
-            while ((drawer.check_color(x, y) == PixelColor.EDGE or drawer.check_color(x, y) == PixelColor.FILL) and x < xr):
+            while (
+                drawer.check_color(x, y) == PixelColor.EDGE
+                or drawer.check_color(x, y) == PixelColor.FILL
+            ) and x < xr:
                 x = x + 1
 
             if x == wx:
@@ -86,14 +94,21 @@ def method_with_seed(edges: List[Edge], drawer: Drawer, seed_pixel: Point, delay
         while x <= xr:
             f = 0
 
-            while drawer.check_color(x, y) != PixelColor.EDGE and \
-                    drawer.check_color(x, y) != PixelColor.FILL and \
-                    x < xr:
-                if f == 0: f = 1
+            while (
+                drawer.check_color(x, y) != PixelColor.EDGE
+                and drawer.check_color(x, y) != PixelColor.FILL
+                and x < xr
+            ):
+                if f == 0:
+                    f = 1
                 x = x + 1
 
             if f == 1:
-                if x == xr and drawer.check_color(x, y) != PixelColor.FILL and drawer.check_color(x, y) != PixelColor.EDGE:
+                if (
+                    x == xr
+                    and drawer.check_color(x, y) != PixelColor.FILL
+                    and drawer.check_color(x, y) != PixelColor.EDGE
+                ):
                     stack.append([x, y])
                 else:
                     stack.append([x - 1, y])
@@ -101,7 +116,10 @@ def method_with_seed(edges: List[Edge], drawer: Drawer, seed_pixel: Point, delay
 
             # Исследуем прерывание интервала
             wx = x
-            while (drawer.check_color(x, y) == PixelColor.EDGE or drawer.check_color(x, y) == PixelColor.FILL) and x < xr:
+            while (
+                drawer.check_color(x, y) == PixelColor.EDGE
+                or drawer.check_color(x, y) == PixelColor.FILL
+            ) and x < xr:
                 x = x + 1
 
             if x == wx:

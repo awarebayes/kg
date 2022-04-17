@@ -360,13 +360,10 @@ class Ui_MainWindow(object):
         self.delay_checkbox.setText(_translate("MainWindow", "Задержка (мс)"))
         self.clear_btn.setText(_translate("MainWindow", "Очистить"))
         self.exit_btn.setText(_translate("MainWindow", "Выход"))
-        self.label_3.setText(_translate("MainWindow", "Цвет \n"
-"Заполнения"))
+        self.label_3.setText(_translate("MainWindow", "Цвет \n" "Заполнения"))
         self.label_4.setText(_translate("MainWindow", "Цвет Границ"))
         self.label_5.setText(_translate("MainWindow", "Цвет Фона"))
         self.label_6.setText(_translate("MainWindow", "Задание: затравка"))
-        self.time_btn.setText(_translate("MainWindow", "Измерить\n"
-"Время"))
-        self.draw_circ_btn.setText(_translate("MainWindow", "Построить\n"
-"эллипс"))
+        self.time_btn.setText(_translate("MainWindow", "Измерить\n" "Время"))
+        self.draw_circ_btn.setText(_translate("MainWindow", "Построить\n" "эллипс"))
         self.zatr_pos_label.setText(_translate("MainWindow", "Затравка:"))

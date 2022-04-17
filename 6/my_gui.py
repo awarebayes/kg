@@ -71,7 +71,6 @@ def dummy_drawer(canvas_width, canvas_height):
         dummy_place,
         dummy_place,
         dummy_place,
-        dummy_place,
         defaultdict(lambda: PixelColor.BACKGROUND),
         canvas_x_low=-canvas_width / 2,
         canvas_x_high=+canvas_width / 2,
@@ -92,14 +91,16 @@ class GuiMainWin(Ui_MainWindow):
         self.scene.setBackgroundBrush(Qt.black)
         self.graphicsView.setScene(self.scene)
         graphics_dim = self.graphicsView.size()
-        self.scene.setSceneRect(0, 0, graphics_dim.width()-2, graphics_dim.height()-2)
+        self.scene.setSceneRect(
+            0, 0, graphics_dim.width() - 2, graphics_dim.height() - 2
+        )
 
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setHorizontalHeaderLabels(["Индекс", "X", "Y"])
         self.tableWidget.setRowCount(100)
         self.connect()
         self.change_bg_color()
-        self.set_seed(graphics_dim.width()//2, graphics_dim.height()//2)
+        self.set_seed(graphics_dim.width() // 2, graphics_dim.height() // 2)
 
     def add_point(self, x, y):
         index = self.model.point_count
@@ -166,7 +167,6 @@ class GuiMainWin(Ui_MainWindow):
         return Drawer(
             _line_edge=self.get_draw_edge(),
             _line_inside=self.get_draw_inside(),
-            _line_mark=self.get_draw_inside(),
             _line_bg=self.get_draw_bg(),
             buffer=defaultdict(lambda: PixelColor.BACKGROUND),
             canvas_x_low=0,
@@ -218,10 +218,7 @@ class GuiMainWin(Ui_MainWindow):
                 fig = hexagon(5, r)
                 edges = list(map(two_point_edge_to_edge, fig))
                 time_start = time.time()
-                method_with_seed(edges,
-                                 dummy_drawer(500, 500),
-                                 (0, 0),
-                                 0)
+                method_with_seed(edges, dummy_drawer(500, 500), (0, 0), 0)
                 total += time.time() - time_start
             time_elapsed.append(total / trials)
 
@@ -246,7 +243,7 @@ class GuiMainWin(Ui_MainWindow):
     def add_ellipse(self, drawer=None):
         self.model.draw_ellipse = True
         dim = self.graphicsView.size()
-        ellipse = (dim.width()//2, dim.height()//2, 300, 200)
+        ellipse = (dim.width() // 2, dim.height() // 2, 300, 200)
         if drawer is None:
             drawer = self.get_drawer()
         method_middle_point_ellipse(*ellipse, drawer.pixel_edge)

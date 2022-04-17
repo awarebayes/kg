@@ -10,7 +10,6 @@ class PixelColor(Enum):
     FILL = 0
     EDGE = 1
     BACKGROUND = 2
-    MARK = 3
 
 
 @dataclass
@@ -54,7 +53,6 @@ class Drawer:
     _line_edge: Callable[[int, int, int, int], None]
     _line_inside: Callable[[int, int, int, int], None]
     _line_bg: Callable[[int, int, int, int], None]
-    _line_mark: Callable[[int, int, int, int], None]
     buffer: DefaultDict[Tuple[int, int], PixelColor]
     canvas_x_low: int
     canvas_x_high: int
@@ -62,31 +60,18 @@ class Drawer:
     canvas_y_high: int
 
     def pixel_edge(self, x, y, intensity=255):
-        self._line_edge(x, y, x, y)
+        if intensity > 0:
+            self._line_edge(x, y, x, y)
         self.buffer[(x, y)] = PixelColor.EDGE
 
-    def pixel_mark(self, x, y, intensity=255):
-        self._line_mark(x, y, x, y)
-        self.buffer[(x, y)] = PixelColor.MARK
-
     def pixel_inside(self, x, y, intensity=255):
-        self._line_inside(x, y, x, y)
+        if intensity > 0:
+            self._line_inside(x, y, x, y)
         self.buffer[(x, y)] = PixelColor.FILL
 
     def pixel_bg(self, x, y, intensity=255):
-        self._line_bg(x, y, x, y)
+        if intensity > 0:
+            self._line_bg(x, y, x, y)
 
     def check_color(self, x, y):
         return self.buffer[(x, y)]
-
-    def pixel_not_edge_and_mark(self, x, y):
-        pixel = self.buffer[(x, y)]
-        return pixel != PixelColor.EDGE and pixel != PixelColor.MARK
-
-    def pixel_not_edge_or_not_mark(self, x, y):
-        pixel = self.buffer[(x, y)]
-        return pixel != PixelColor.EDGE or pixel != PixelColor.MARK
-
-    def pixel_is_edge_or_mark(self, x, y):
-        pixel = self.buffer[(x, y)]
-        return pixel == PixelColor.EDGE or pixel == PixelColor.MARK
