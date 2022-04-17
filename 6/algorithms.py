@@ -16,137 +16,94 @@ def wait(delay):
 
 def draw_edges(edges: List[Edge], drawer):
     for edge in edges:
-        wu(edge.p1(), edge.p2(), drawer.pixel_edge)
+        dda(edge.p1(), edge.p2(), drawer.pixel_edge)
 
 
 def method_with_seed(edges: List[Edge], drawer: Drawer, seed_pixel: Point, delay: int):
     draw_edges(edges, drawer)
+    stack = []
 
-    stack = [seed_pixel]
+    stack.append(seed_pixel)  # записываем в стек затравочный пиксель
 
     while stack:
-
-        seed_pixel = stack.pop()
-
-        x = seed_pixel[0]
-        y = seed_pixel[1]
-
-        if y > drawer.canvas_y_high or y < drawer.canvas_y_low:
+        point = stack.pop()
+        x, y = point
+        if drawer.canvas_y_low > y or drawer.canvas_y_high < y:
             continue
 
-        drawer.pixel_mark(x, y)
-        x_started = x
-        y_started = y
+        wx = x  # запоминаем абсциссу
 
-        # заполняем интервал справа от затравки
+        # заполнение справа
+        while drawer.check_color(x, y) != PixelColor.EDGE and x <= drawer.canvas_x_high:
+            drawer.pixel_inside(x, y)
+            x = x + 1
 
-        x += 1
-        while (
-            drawer.check_color(x, y) != PixelColor.MARK
-            and drawer.check_color(x, y) != PixelColor.EDGE
-            and x < drawer.canvas_x_high
-        ):
-            drawer.pixel_mark(x, y)
-            x += 1
+        xr = x - 1  # запоминаем пиксель справа
 
-        x_right = x - 1
+        x = wx
 
-        # заполняем интервал слева от затравки
+        # заполнение слева
+        while drawer.check_color(x, y) != PixelColor.EDGE and x >= drawer.canvas_x_low:
+            drawer.pixel_inside(x, y)
+            x = x - 1
 
-        x = x_started - 1
-        while (
-            drawer.check_color(x, y) != PixelColor.MARK
-            and drawer.check_color(x, y) != PixelColor.EDGE
-            and x > drawer.canvas_x_low
-        ):
-            drawer.pixel_mark(x, y)
-            x -= 1
+        xl = x + 1  # запоминаем пиксель слева
 
-        x_left = x + 1
+        x = xl
+        y = y + 1
 
-        # Проход по верхней строке
+        # Ищем затравочные пиксели на строке выше
+        while x <= xr:
+            f = 0
 
-        x = x_left
-        y = y_started + 1
+            while drawer.check_color(x, y) != PixelColor.EDGE and \
+                    drawer.check_color(x, y) != PixelColor.FILL and \
+                    x < xr:
+                if f == 0: f = 1
+                x = x + 1
 
-        while x <= x_right:
-            flag = False
 
-            while (
-                drawer.check_color(x, y) != PixelColor.MARK
-                and drawer.check_color(x, y) != PixelColor.EDGE
-                and x <= x_right
-            ):
-                flag = True
-                x += 1
 
-            # Помещаем в стек крайний справа пиксель
-
-            if flag:
-                if (
-                    x == x_right
-                    and drawer.check_color(x, y) != PixelColor.MARK
-                    and drawer.check_color(x, y) != PixelColor.EDGE
-                ):
+            if f == 1:
+                if x == xr and drawer.check_color(x, y) != PixelColor.FILL and drawer.check_color(x, y) != PixelColor.EDGE:
                     stack.append([x, y])
                 else:
                     stack.append([x - 1, y])
+                f = 0
 
-                flag = False
-
-            # Продолжаем проверку, если интервал был прерван
-
-            x_beg = x
-            while (
-                drawer.check_color(x, y) == PixelColor.EDGE
-                or drawer.check_color(x, y) == PixelColor.MARK
-            ) and x < x_right:
+            # Исследуем прерывание интервала
+            wx = x
+            while ((drawer.check_color(x, y) == PixelColor.EDGE or drawer.check_color(x, y) == PixelColor.FILL) and x < xr):
                 x = x + 1
 
-            if x == x_beg:
-                x += 1
+            if x == wx:
+                x = x + 1
 
-        # Проход по нижней строке
+        x = xl
+        y = y - 2
 
-        x = x_left
-        y = y_started - 1
+        # Ищем затравочные пиксели на строке ниже
+        while x <= xr:
+            f = 0
 
-        while x <= x_right:
-            flag = False
+            while drawer.check_color(x, y) != PixelColor.EDGE and \
+                    drawer.check_color(x, y) != PixelColor.FILL and \
+                    x < xr:
+                if f == 0: f = 1
+                x = x + 1
 
-            while (
-                drawer.check_color(x, y) != PixelColor.MARK
-                and drawer.check_color(x, y) != PixelColor.EDGE
-                and x <= x_right
-            ):
-                flag = True
-                x += 1
-
-            # Помещаем в стек крайний справа пиксель
-
-            if flag:
-                if (
-                    x == x_right
-                    and drawer.check_color(x, y) != PixelColor.MARK
-                    and drawer.check_color(x, y) != PixelColor.EDGE
-                ):
+            if f == 1:
+                if x == xr and drawer.check_color(x, y) != PixelColor.FILL and drawer.check_color(x, y) != PixelColor.EDGE:
                     stack.append([x, y])
                 else:
                     stack.append([x - 1, y])
+                f = 0
 
-                flag = False
-
-            # Продолжаем проверку, если интервал был прерван
-
-            x_beg = x
-            while (
-                drawer.check_color(x, y) == PixelColor.EDGE
-                or drawer.check_color(x, y) == PixelColor.MARK
-                and x < x_right
-            ):
+            # Исследуем прерывание интервала
+            wx = x
+            while (drawer.check_color(x, y) == PixelColor.EDGE or drawer.check_color(x, y) == PixelColor.FILL) and x < xr:
                 x = x + 1
 
-            if x == x_beg:
-                x += 1
-
+            if x == wx:
+                x = x + 1
         wait(delay)

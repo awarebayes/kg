@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from my_types import TwoPointEdge, PixelColor, two_point_edge_to_edge, Drawer, Point
 from algorithms import method_with_seed
 from sys import exit
+from ellipse import method_middle_point_ellipse
 
 EPS = 10
 
@@ -20,12 +21,14 @@ EPS = 10
 class Model:
     edges: List[TwoPointEdge]
     point_count: int
-    seed: Point = (0, 0)
+    seed: Point = (400, 400)
+    draw_ellipse: bool = False
 
     def reset(self):
         self.edges = []
-        self.seed = (0, 0)
+        self.seed = (400, 400)
         self.point_count = 0
+        self.draw_ellipse = False
 
 
 color_map = {
@@ -88,14 +91,15 @@ class GuiMainWin(Ui_MainWindow):
         self.scene = QGraphicsScene()
         self.scene.setBackgroundBrush(Qt.black)
         self.graphicsView.setScene(self.scene)
-        self.scene.setSceneRect(-1, -1, 1, 1)
+        graphics_dim = self.graphicsView.size()
+        self.scene.setSceneRect(0, 0, graphics_dim.width()-2, graphics_dim.height()-2)
 
         self.tableWidget.setColumnCount(3)
         self.tableWidget.setHorizontalHeaderLabels(["Индекс", "X", "Y"])
         self.tableWidget.setRowCount(100)
         self.connect()
         self.change_bg_color()
-        self.set_seed(0, 0)
+        self.set_seed(graphics_dim.width()//2, graphics_dim.height()//2)
 
     def add_point(self, x, y):
         index = self.model.point_count
@@ -113,6 +117,7 @@ class GuiMainWin(Ui_MainWindow):
         self.bg_color.currentIndexChanged.connect(self.change_bg_color)
         self.exit_btn.clicked.connect(lambda *args: exit(0))
         self.time_btn.clicked.connect(self.time_benchmark)
+        self.draw_circ_btn.clicked.connect(lambda: self.add_ellipse(None))
 
     def clear(self):
         self.tableWidget.clear()
@@ -164,15 +169,19 @@ class GuiMainWin(Ui_MainWindow):
             _line_mark=self.get_draw_inside(),
             _line_bg=self.get_draw_bg(),
             buffer=defaultdict(lambda: PixelColor.BACKGROUND),
-            canvas_x_low=-self.graphicsView.size().width() / 2,
-            canvas_x_high=+self.graphicsView.size().width() / 2,
-            canvas_y_low=-self.graphicsView.size().height() / 2,
-            canvas_y_high=+self.graphicsView.size().height() / 2,
+            canvas_x_low=0,
+            canvas_x_high=self.graphicsView.size().width(),
+            canvas_y_low=0,
+            canvas_y_high=self.graphicsView.size().height(),
         )
 
     def fill(self):
         self.scene.clear()
         drawer = self.get_drawer()
+
+        if self.model.draw_ellipse:
+            self.add_ellipse(drawer)
+
         edges = self.model.edges
         edges = list(map(two_point_edge_to_edge, edges))
 
@@ -183,10 +192,8 @@ class GuiMainWin(Ui_MainWindow):
 
     def transform(self, x, y):
         x -= self.graphicsView.pos().x()
-        x -= int(self.graphicsView.size().width() / 2)
 
         y -= self.graphicsView.pos().y()
-        y -= int(self.graphicsView.size().height() / 2)
 
         return x, y
 
@@ -197,7 +204,7 @@ class GuiMainWin(Ui_MainWindow):
             y = last_point[1]
         return x, y
 
-    def time_benchmark(self, warmup=False, trials=10):
+    def time_benchmark(self, warmup=False, trials=1):
 
         if not warmup:
             self.time_benchmark(warmup=True, trials=5)
@@ -212,7 +219,7 @@ class GuiMainWin(Ui_MainWindow):
                 edges = list(map(two_point_edge_to_edge, fig))
                 time_start = time.time()
                 method_with_seed(edges,
-                                 dummy_drawer(self.graphicsView.size().width(), self.graphicsView.size().height()),
+                                 dummy_drawer(500, 500),
                                  (0, 0),
                                  0)
                 total += time.time() - time_start
@@ -231,6 +238,15 @@ class GuiMainWin(Ui_MainWindow):
 
     def set_seed(self, x, y):
         bg_color = color_map[self.bg_color.currentText()]
-        self.scene.addEllipse(*self.model.seed, 5, 5, pen=bg_color)
+        self.scene.addEllipse(*self.model.seed, 1, 1, pen=bg_color)
         self.model.seed = (x, y)
-        self.scene.addEllipse(*self.model.seed, 5, 5, pen=Qt.darkCyan)
+        self.scene.addEllipse(*self.model.seed, 1, 1, pen=Qt.darkCyan)
+        self.zatr_pos_label.setText(f"Затравка: {x}, {y}")
+
+    def add_ellipse(self, drawer=None):
+        self.model.draw_ellipse = True
+        dim = self.graphicsView.size()
+        ellipse = (dim.width()//2, dim.height()//2, 300, 200)
+        if drawer is None:
+            drawer = self.get_drawer()
+        method_middle_point_ellipse(*ellipse, drawer.pixel_edge)

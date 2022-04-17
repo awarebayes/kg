@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1213</width>
-    <height>905</height>
+    <height>959</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,16 +20,16 @@
       <x>430</x>
       <y>10</y>
       <width>771</width>
-      <height>821</height>
+      <height>891</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="fill_btn">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>490</y>
-      <width>141</width>
+      <x>30</x>
+      <y>500</y>
+      <width>341</width>
       <height>61</height>
      </rect>
     </property>
@@ -144,8 +144,8 @@
    <widget class="QPushButton" name="enclose_btn">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>100</y>
+      <x>30</x>
+      <y>200</y>
       <width>341</width>
       <height>41</height>
      </rect>
@@ -604,8 +604,8 @@
    <widget class="QComboBox" name="fill_color">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>180</y>
+      <x>190</x>
+      <y>270</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -644,8 +644,8 @@
    <widget class="QComboBox" name="border_color">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>250</y>
+      <x>190</x>
+      <y>330</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -684,8 +684,8 @@
    <widget class="QComboBox" name="bg_color">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>320</y>
+      <x>190</x>
+      <y>390</y>
       <width>181</width>
       <height>41</height>
      </rect>
@@ -724,8 +724,8 @@
    <widget class="QCheckBox" name="delay_checkbox">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>420</y>
+      <x>180</x>
+      <y>460</y>
       <width>241</width>
       <height>21</height>
      </rect>
@@ -742,8 +742,8 @@
    <widget class="QSpinBox" name="delay_inp">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>410</y>
+      <x>70</x>
+      <y>460</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -757,14 +757,14 @@
      <number>400</number>
     </property>
     <property name="value">
-     <number>10</number>
+     <number>1</number>
     </property>
    </widget>
    <widget class="QPushButton" name="clear_btn">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>570</y>
+      <x>30</x>
+      <y>650</y>
       <width>141</width>
       <height>41</height>
      </rect>
@@ -781,8 +781,8 @@
    <widget class="QPushButton" name="exit_btn">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>570</y>
+      <x>210</x>
+      <y>650</y>
       <width>161</width>
       <height>41</height>
      </rect>
@@ -799,8 +799,8 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>170</y>
+      <x>30</x>
+      <y>260</y>
       <width>141</width>
       <height>61</height>
      </rect>
@@ -818,8 +818,8 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>256</y>
+      <x>30</x>
+      <y>340</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -836,8 +836,8 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>326</y>
+      <x>30</x>
+      <y>400</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -866,14 +866,14 @@
      </font>
     </property>
     <property name="text">
-     <string>Задание: алгоритм с флажком</string>
+     <string>Задание: затравка</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>640</y>
+      <x>20</x>
+      <y>710</y>
       <width>371</width>
       <height>191</height>
      </rect>
@@ -887,8 +887,8 @@
    <widget class="QPushButton" name="time_btn">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>490</y>
+      <x>210</x>
+      <y>580</y>
       <width>161</width>
       <height>61</height>
      </rect>
@@ -903,6 +903,43 @@
 Время</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="draw_circ_btn">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>580</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Построить
+эллипс</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="zatr_pos_label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>120</y>
+      <width>211</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Затравка:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -910,7 +947,7 @@
      <x>0</x>
      <y>0</y>
      <width>1213</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

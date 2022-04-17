@@ -71,6 +71,7 @@ class Drawer:
 
     def pixel_inside(self, x, y, intensity=255):
         self._line_inside(x, y, x, y)
+        self.buffer[(x, y)] = PixelColor.FILL
 
     def pixel_bg(self, x, y, intensity=255):
         self._line_bg(x, y, x, y)

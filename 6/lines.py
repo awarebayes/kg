@@ -36,6 +36,7 @@ def bresenham_integer(start, end, place_pixel):
                 x += sign_dx
             error += 2 * dy
 
+
 def wu_x_line(start, end, place_pixel, i_max=255):
     x_1, y_1 = start
     x_2, y_2 = end
@@ -107,7 +108,8 @@ def dda(start, end, place_pixel):
     x_2, y_2 = end
 
     length = max(abs(x_2 - x_1), abs(y_2 - y_1))
-    assert length > 0
+    if length == 0:
+        return
 
     dx = (x_2 - x_1) / length
     dy = (y_2 - y_1) / length

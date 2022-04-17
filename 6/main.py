@@ -2,7 +2,7 @@ from typing import Optional
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QApplication
 
 from my_gui import GuiMainWin
 from my_types import Point
@@ -26,7 +26,7 @@ class MainWin(QtWidgets.QMainWindow):
         width = self.ui.graphicsView.width()
         height = self.ui.graphicsView.height()
 
-        if not (-width / 2 <= x <= width / 2) or not (-height / 2 <= y <= height / 2):
+        if not 0 <= x <= width or not 0 <= y <= height:
             return
 
         self.ui.add_point(x, y)
@@ -72,9 +72,26 @@ class MainWin(QtWidgets.QMainWindow):
         self.ui.fill()
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        shift_pressed = QApplication.queryKeyboardModifiers() == Qt.ShiftModifier
+        print("shift:", shift_pressed)
+
+        if event.button() == Qt.LeftButton and not shift_pressed:
             x, y = self.ui.transform(event.pos().x(), event.pos().y())
             self.add_point(x, y)
+
+        elif event.button() == Qt.LeftButton and shift_pressed:
+            if self.last_point is None:
+                return
+
+            x, y = self.ui.transform(event.pos().x(), event.pos().y())
+            x, y = self.ui.get_ver_hor_line(x, y, self.last_point)
+
+            self.ui.add_point(x, y)
+
+            draw_func = self.ui.get_draw_edge_log()
+            draw_func(*self.last_point, x, y)
+
+            self.last_point = (x, y)
 
         elif event.button() == Qt.RightButton:
             x, y = self.ui.transform(event.pos().x(), event.pos().y())
