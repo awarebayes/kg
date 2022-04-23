@@ -31,21 +31,18 @@
      <rect>
       <x>0</x>
       <y>280</y>
-      <width>621</width>
+      <width>658</width>
       <height>551</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_9">
        <item>
         <widget class="QGroupBox" name="groupBoxChooseBG_8">
-         <property name="minimumSize">
-          <size>
-           <width>350</width>
-           <height>250</height>
-          </size>
-         </property>
          <property name="maximumSize">
           <size>
            <width>350</width>
@@ -58,7 +55,7 @@
           </font>
          </property>
          <property name="title">
-          <string>Ввод отсекателя </string>
+          <string>Отсекатель</string>
          </property>
          <widget class="QLabel" name="label_2">
           <property name="geometry">
@@ -90,7 +87,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>160</y>
+            <y>130</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -103,7 +100,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>130</y>
+            <y>100</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -115,7 +112,7 @@
          <widget class="QLineEdit" name="lineEdit_xleft">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>130</x>
             <y>40</y>
             <width>113</width>
             <height>25</height>
@@ -133,7 +130,7 @@
          <widget class="QLineEdit" name="lineEdit_xright">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>130</x>
             <y>70</y>
             <width>113</width>
             <height>25</height>
@@ -151,8 +148,8 @@
          <widget class="QLineEdit" name="lineEdit_yup">
           <property name="geometry">
            <rect>
-            <x>110</x>
-            <y>160</y>
+            <x>130</x>
+            <y>130</y>
             <width>113</width>
             <height>25</height>
            </rect>
@@ -169,8 +166,8 @@
          <widget class="QLineEdit" name="lineEdit_ydown">
           <property name="geometry">
            <rect>
-            <x>110</x>
-            <y>130</y>
+            <x>130</x>
+            <y>100</y>
             <width>113</width>
             <height>25</height>
            </rect>
@@ -187,14 +184,14 @@
          <widget class="QPushButton" name="pushButton_draw_rest">
           <property name="geometry">
            <rect>
-            <x>98</x>
-            <y>204</y>
+            <x>10</x>
+            <y>170</y>
             <width>231</width>
             <height>41</height>
            </rect>
           </property>
           <property name="text">
-           <string>Нарисовать отсекатель</string>
+           <string>Нарисовать</string>
           </property>
          </widget>
         </widget>
@@ -247,7 +244,7 @@
           </font>
          </property>
          <property name="title">
-          <string>Ввод отрезка</string>
+          <string>Отрезок</string>
          </property>
          <widget class="QLabel" name="label_6">
           <property name="geometry">
@@ -279,7 +276,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>160</y>
+            <y>130</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -292,7 +289,7 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>130</y>
+            <y>100</y>
             <width>101</width>
             <height>31</height>
            </rect>
@@ -341,7 +338,7 @@
           <property name="geometry">
            <rect>
             <x>110</x>
-            <y>160</y>
+            <y>130</y>
             <width>113</width>
             <height>25</height>
            </rect>
@@ -359,7 +356,7 @@
           <property name="geometry">
            <rect>
             <x>110</x>
-            <y>130</y>
+            <y>100</y>
             <width>113</width>
             <height>25</height>
            </rect>
@@ -376,40 +373,27 @@
          <widget class="QPushButton" name="pushButton_draw_line">
           <property name="geometry">
            <rect>
-            <x>98</x>
-            <y>204</y>
-            <width>231</width>
+            <x>10</x>
+            <y>170</y>
+            <width>151</width>
             <height>41</height>
            </rect>
           </property>
           <property name="text">
-           <string>Нарисовать отрезок</string>
+           <string>Нарисовать</string>
           </property>
          </widget>
-         <widget class="QLabel" name="label_11">
+         <widget class="QPushButton" name="edges_button">
           <property name="geometry">
            <rect>
-            <x>250</x>
-            <y>40</y>
-            <width>101</width>
-            <height>31</height>
+            <x>190</x>
+            <y>170</y>
+            <width>141</width>
+            <height>41</height>
            </rect>
           </property>
           <property name="text">
-           <string>Толщина</string>
-          </property>
-         </widget>
-         <widget class="QSpinBox" name="spinBox_w">
-          <property name="geometry">
-           <rect>
-            <x>260</x>
-            <y>70</y>
-            <width>61</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="value">
-           <number>1</number>
+           <string>По граням</string>
           </property>
          </widget>
         </widget>
@@ -460,19 +444,19 @@
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
-      <x>630</x>
+      <x>680</x>
       <y>20</y>
-      <width>961</width>
-      <height>881</height>
+      <width>911</width>
+      <height>961</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_clean">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>930</y>
-      <width>601</width>
+      <x>260</x>
+      <y>160</y>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
@@ -491,43 +475,18 @@
      <string>Очистить экран</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>0</y>
-      <width>131</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Рабочее место</string>
-    </property>
-   </widget>
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>-1</x>
-      <y>-1</y>
+      <x>30</x>
+      <y>20</y>
       <width>621</width>
-      <height>162</height>
+      <height>81</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QGroupBox" name="groupBoxChooseBG">
-       <property name="minimumSize">
-        <size>
-         <width>145</width>
-         <height>160</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>145</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -536,103 +495,50 @@
        <property name="title">
         <string>Фон</string>
        </property>
-       <widget class="QRadioButton" name="radioButtonWhite_bg">
+       <widget class="QComboBox" name="color_bg_select">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>30</y>
-          <width>166</width>
-          <height>20</height>
+          <y>40</y>
+          <width>131</width>
+          <height>25</height>
          </rect>
         </property>
-        <property name="text">
-         <string>Белый</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlack_bg">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Черный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonRed_bg">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonYellow_bg">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Желтый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonGreen_bg">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Зеленый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlue_bg">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>176</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Синий</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>Белый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Черный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Желтый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Зеленый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Красный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Синий</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </item>
      <item>
       <widget class="QGroupBox" name="groupBoxChooseREST">
-       <property name="minimumSize">
-        <size>
-         <width>145</width>
-         <height>160</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>145</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -641,106 +547,50 @@
        <property name="title">
         <string>Отсекатель</string>
        </property>
-       <widget class="QRadioButton" name="radioButtonWhite_rest">
+       <widget class="QComboBox" name="color_otsekatel_selct">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
+          <y>40</y>
+          <width>131</width>
+          <height>25</height>
          </rect>
         </property>
-        <property name="text">
-         <string>Белый</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlack_rest">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Черный</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonRed_rest">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonYellow_rest">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Желтый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonGreen_rest">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Зеленый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlue_rest">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>176</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Синий</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>Черный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Белый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Желтый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Зеленый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Красный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Синий</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </item>
      <item>
       <widget class="QGroupBox" name="groupBoxChooserwRESULT">
-       <property name="minimumSize">
-        <size>
-         <width>145</width>
-         <height>160</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>145</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -749,106 +599,50 @@
        <property name="title">
         <string>Отсечение</string>
        </property>
-       <widget class="QRadioButton" name="radioButtonWhite_res">
+       <widget class="QComboBox" name="color_otsechenie_select">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
+          <y>40</y>
+          <width>131</width>
+          <height>25</height>
          </rect>
         </property>
-        <property name="text">
-         <string>Белый</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlack_res">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Черный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonRed_res">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonYellow_res">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Желтый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonGreen_res">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Зеленый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlue_res">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>176</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Синий</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>Красный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Белый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Черный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Желтый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Зеленый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Синий</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </item>
      <item>
       <widget class="QGroupBox" name="groupBoxChooseLINE">
-       <property name="minimumSize">
-        <size>
-         <width>145</width>
-         <height>160</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>145</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -857,89 +651,45 @@
        <property name="title">
         <string>Отрезок</string>
        </property>
-       <widget class="QRadioButton" name="radioButtonWhite_line">
+       <widget class="QComboBox" name="color_otrezok_select">
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
+          <y>40</y>
+          <width>121</width>
+          <height>25</height>
          </rect>
         </property>
-        <property name="text">
-         <string>Белый</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlack_line">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>70</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Черный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonRed_line">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>110</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Красный</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonYellow_line">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>90</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Желтый</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonGreen_line">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>181</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Зеленый</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButtonBlue_line">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>130</y>
-          <width>176</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Синий</string>
-        </property>
+        <item>
+         <property name="text">
+          <string>Зеленый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Белый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Черный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Желтый</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Красный</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Синий</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </item>
@@ -948,74 +698,50 @@
    <widget class="QWidget" name="horizontalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>170</y>
-      <width>621</width>
-      <height>102</height>
+      <x>30</x>
+      <y>110</y>
+      <width>145</width>
+      <height>113</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_8">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="QGroupBox" name="groupBoxChooseDRAW">
-       <property name="minimumSize">
-        <size>
-         <width>600</width>
-         <height>90</height>
-        </size>
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>90</height>
-        </size>
+       <property name="text">
+        <string>Рисование</string>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_draw_line">
        <property name="font">
         <font>
          <pointsize>16</pointsize>
         </font>
        </property>
-       <property name="title">
-        <string>РИСОВАНИЕ</string>
+       <property name="text">
+        <string>Отрезки</string>
        </property>
-       <widget class="QRadioButton" name="radioButton_draw_line">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Отрезки</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton_draw_rest">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>50</y>
-          <width>166</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>16</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Отсекатель</string>
-        </property>
-       </widget>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_draw_rest">
+       <property name="font">
+        <font>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Отсекатель</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -1023,9 +749,9 @@
    <widget class="QPushButton" name="pushButton_RES">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>890</y>
-      <width>601</width>
+      <x>260</x>
+      <y>120</y>
+      <width>191</width>
       <height>31</height>
      </rect>
     </property>
@@ -1034,6 +760,9 @@
       <pointsize>16</pointsize>
      </font>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background: rgb(170, 255, 255)</string>
+    </property>
     <property name="text">
      <string>Отсечение</string>
     </property>
@@ -1041,30 +770,65 @@
    <widget class="QLabel" name="label_12">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>900</y>
+      <x>30</x>
+      <y>860</y>
       <width>471</width>
       <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <pointsize>14</pointsize>
      </font>
     </property>
     <property name="text">
-     <string>Для отрисовки горизонтальных и вертикальных линий:
-1 - Нарисуйте первую вершину отрезка
-2 - Зажмите кнопку CTRL и нарисуйте вторую вершину</string>
+     <string>Отрезки по осям: используйте shift</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>1120</x>
-      <y>900</y>
-      <width>451</width>
-      <height>61</height>
+      <x>30</x>
+      <y>920</y>
+      <width>601</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Отсекатель отрисовывается с зажатой левой клавишей мышки</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>110</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Толщина
+отсечения</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBox_w">
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>180</y>
+      <width>61</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -1072,10 +836,26 @@
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="value">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exitButton">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>200</y>
+      <width>191</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>Для отрисовки отсекателя:
-1 - Нарисуйте верхнюю левую вершину 
-2- С зажатой левой кнопкой растягивайте прямоугольник</string>
+     <string>Выход</string>
     </property>
    </widget>
   </widget>

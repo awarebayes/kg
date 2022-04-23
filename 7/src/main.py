@@ -1,11 +1,8 @@
 import sys
-import numpy as np
-import win2
-import pyqtgraph as pg
-import matplotlib.pyplot as plt
+from copy import copy, deepcopy
 
-from time import time
-from copy import deepcopy
+import win2
+
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QTableWidgetItem, QMessageBox
@@ -18,7 +15,7 @@ from numpy import sign
 
 now = None
 now_buf = None
-ctrl = False
+shift = False
 wind = None
 
 def bresenham(picture, x_start, xEnd, y_start, yEnd, color):
@@ -69,48 +66,68 @@ def bresenham(picture, x_start, xEnd, y_start, yEnd, color):
 class Scene(QtWidgets.QGraphicsScene):
     
     def keyPressEvent(self, event):
-        global ctrl
-        # print(event.key() == Qt.Key_Control)
-        if event.key() == Qt.Key_Control:
-            # print("if")
-            ctrl = True
+        global shift
+        if event.key() == Qt.Key_Shift:
+            shift = True
         else:
-            # print("else")
-            ctrl = False
-        # print("res", ctrl)
-    # добавить точку по щелчку мыши
+            shift = False
+        print("Shift pressed", shift)
+
+    def keyReleaseEvent(self, event: QtGui.QKeyEvent) -> None:
+        global shift
+        if event.key() == Qt.Key_Shift:
+            shift = False
+        else:
+            shift = True
+        print("Shift released", shift)
+
     def mousePressEvent(self, event):
         add_point(event.scenePos())
-        
+
+    def mouseReleaseEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
+        global now
+        if event.button() == Qt.MouseButton.LeftButton:
+            now = None
 
     # добавить прямоугольник
     def mouseMoveEvent(self, event):
         global now, wind
         if wind.input_rect:
             if now is None:
-                # if len(wind.rect) == 4:
-                #     print("DDDDDDDDD")
-                #     pen = QtGui.QPen(QtCore.Qt.white)
-                #     self.addRect(wind.rect[0], wind.rect[3], 
-                #              abs(wind.rect[0] - wind.rect[1]), abs(wind.rect[3] - wind.rect[2]), pen)
-                #     wind.draw_all_line()
                 now = event.scenePos()
-                wind.rect[0] = now.x()
-                wind.rect[3] = now.y()
-                
             else:
-                self.removeItem(self.itemAt(now, QTransform()))
+                wind.remove_otsekatel(self)
                 p = event.scenePos()
-                self.addRect(now.x(), now.y(), abs(now.x() - p.x()), abs(now.y() - p.y()), wind.pen_rest)
-                wind.rect[1] = p.x()
-                wind.rect[2] = p.y()
+                x1 = now.x()
+                x2 = p.x()
+                y1 = now.y()
+                y2 = p.y()
+                wind.rect_from_points((x1, x2), (y1, y2))
+                wind.draw_otsekatel(self)
         strr = "Х левое = {0}\nХ правое = {1}\nУ нижнее = {2}\nУ верхнее = {3}\n".format(wind.rect[0],
                                                                                          wind.rect[1],
                                                                                          wind.rect[2],
                                                                                          wind.rect[3])
         wind.label_10.setText(strr)
 
-               
+
+color_russian_to_english = {
+    "Белый": "white",
+    "Черный": "black",
+    "Желтый": "yellow",
+    "Зеленый": "green",
+    "Красный": "red",
+    "Синий": "blue",
+}
+
+color_russian_to_qt = {
+    "Белый": Qt.white,
+    "Черный": Qt.black,
+    "Желтый": Qt.yellow,
+    "Зеленый": Qt.green,
+    "Красный": Qt.red,
+    "Синий": Qt.blue
+}
 
 
 class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
@@ -143,39 +160,19 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
         self.radioButton_draw_line.clicked.connect(self.cheng)
         self.radioButton_draw_rest.clicked.connect(self.cheng) 
 
-        self.radioButtonBlack_bg.clicked.connect(self.set_black_bg)
-        self.radioButtonBlue_bg.clicked.connect(self.set_blue_bg)
-        self.radioButtonGreen_bg.clicked.connect(self.set_green_bg)
-        self.radioButtonRed_bg.clicked.connect(self.set_red_bg)
-        self.radioButtonWhite_bg.clicked.connect(self.set_white_bg)
-        self.radioButtonYellow_bg.clicked.connect(self.set_yellow_bg)
-
-        self.radioButtonBlack_line.clicked.connect(self.set_black_line)
-        self.radioButtonBlue_line.clicked.connect(self.set_blue_line)
-        self.radioButtonGreen_line.clicked.connect(self.set_green_line)
-        self.radioButtonRed_line.clicked.connect(self.set_red_line)
-        self.radioButtonWhite_line.clicked.connect(self.set_white_line)
-        self.radioButtonYellow_line.clicked.connect(self.set_yellow_line)
-
-        self.radioButtonBlack_rest.clicked.connect(self.set_black_rest)
-        self.radioButtonBlue_rest.clicked.connect(self.set_blue_rest)
-        self.radioButtonGreen_rest.clicked.connect(self.set_green_rest)
-        self.radioButtonRed_rest.clicked.connect(self.set_red_rest)
-        self.radioButtonWhite_rest.clicked.connect(self.set_white_rest)
-        self.radioButtonYellow_rest.clicked.connect(self.set_yellow_rest)
-
-        self.radioButtonBlack_res.clicked.connect(self.set_black_res)
-        self.radioButtonBlue_res.clicked.connect(self.set_blue_res)
-        self.radioButtonGreen_res.clicked.connect(self.set_green_res)
-        self.radioButtonRed_res.clicked.connect(self.set_red_res)
-        self.radioButtonWhite_res.clicked.connect(self.set_white_res)
-        self.radioButtonYellow_res.clicked.connect(self.set_yellow_res)
+        self.color_bg_select.currentTextChanged.connect(self.set_background)
+        self.color_otrezok_select.currentTextChanged.connect(self.set_line_color)
+        self.color_otsechenie_select.currentTextChanged.connect(self.set_otsechenie_color)
+        self.color_otsekatel_selct.currentTextChanged.connect(self.set_otsekatel_color)
 
         self.pushButton_clean.clicked.connect(self.clean_screen)
         self.pushButton_draw_line.clicked.connect(self.add_line1)
         self.pushButton_draw_rest.clicked.connect(self.add_rect)
         # self.pushButton_gran.clicked.connect(self.add_bars)
         self.pushButton_RES.clicked.connect(clipping)
+        self.edges_button.clicked.connect(self.draw_edges)
+        self.exitButton.clicked.connect(lambda: exit(0))
+        self.graphicsView.setFocus()
 
 
     def cheng(self):
@@ -201,83 +198,25 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
         for i in range(r, -1, -1):
             self.table_line.removeRow(i)
 
-    def set_black_line(self):
-        self.pen_line.setColor(QtCore.Qt.black)
+    def set_line_color(self):
+        text = self.color_otrezok_select.currentText()
+        color = color_russian_to_qt[text]
+        self.pen_line.setColor(color)
 
-    def set_white_line(self):
-        self.pen_line.setColor(QtCore.Qt.white)
-    
-    def set_blue_line(self):
-        self.pen_line.setColor(QtCore.Qt.blue)
+    def set_otsechenie_color(self):
+        text = self.color_otsechenie_select.currentText()
+        color = color_russian_to_qt[text]
+        self.pen_res.setColor(color)
 
-    def set_red_line(self):
-        self.pen_line.setColor(QtCore.Qt.red)
+    def set_otsekatel_color(self):
+        text = self.color_otsekatel_selct.currentText()
+        color = color_russian_to_qt[text]
+        self.pen_rest.setColor(color)
 
-    def set_green_line(self):
-        self.pen_line.setColor(QtCore.Qt.green)
-
-    def set_yellow_line(self):
-        self.pen_line.setColor(QtCore.Qt.yellow)
-
-
-
-    def set_black_res(self):
-        self.pen_res.setColor(QtCore.Qt.black)
-
-    def set_white_res(self):
-        self.pen_res.setColor(QtCore.Qt.white)
-    
-    def set_blue_res(self):
-        self.pen_res.setColor(QtCore.Qt.blue)
-
-    def set_red_res(self):
-        self.pen_res.setColor(QtCore.Qt.red)
-
-    def set_green_res(self):
-        self.pen_res.setColor(QtCore.Qt.green)
-
-    def set_yellow_res(self):
-        self.pen_res.setColor(QtCore.Qt.yellow)
-
-
-
-    def set_black_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.black)
-
-    def set_white_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.white)
-    
-    def set_blue_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.blue)
-
-    def set_red_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.red)
-
-    def set_green_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.green)
-
-    def set_yellow_rest(self):
-        self.pen_rest.setColor(QtCore.Qt.yellow)
-
-
-
-    def set_black_bg(self):
-        self.graphicsView.setStyleSheet("background-color: black")
-
-    def set_white_bg(self):
-        self.graphicsView.setStyleSheet("background-color: white")
-
-    def set_blue_bg(self):
-        self.graphicsView.setStyleSheet("background-color: blue")
-
-    def set_red_bg(self):
-        self.graphicsView.setStyleSheet("background-color: red")
-
-    def set_green_bg(self):
-        self.graphicsView.setStyleSheet("background-color: #00ff00")
-
-    def set_yellow_bg(self):
-        self.graphicsView.setStyleSheet("background-color: yellow")
+    def set_background(self):
+        color_text = self.color_bg_select.currentText()
+        bg_color = color_russian_to_english[color_text]
+        self.graphicsView.setStyleSheet(f"background-color: {bg_color}")
 
 
     def add_line1(self):
@@ -288,10 +227,13 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
             y_end = float(self.lineEdit_7.text())
         except Exception:
             QMessageBox.warning(self, "Внимание!", "Неверно введены координаты!")
-            return 
+            return
 
+        self.scene_add_line(x_start, x_end, y_start, y_end)
+
+    def scene_add_line(self, x_start, x_end, y_start, y_end):
         wind.lines.append([[x_start, y_start],
-                            [x_end, y_end]])
+                           [x_end, y_end]])
 
         add_row(wind)
         i = wind.table_line.rowCount() - 1
@@ -313,77 +255,54 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
             y_up = float(self.lineEdit_yup.text())
         except Exception:
             QMessageBox.warning(self, "Внимание!", "Неверно введены координаты!")
-            return 
+            return
+        self.remove_otsekatel(self.scene)
         now = QtCore.QPointF(x_left, y_up)
         # print(now, type(now))
-        self.rect[0] = x_left
-        self.rect[1] = x_right
-        self.rect[2] = y_down
-        self.rect[3] = y_up
+        self.rect_from_points((x_left, x_right), (y_down, y_up))
 
         strr = "Х левое = {0}\nХ правое = {1}\nУ нижнее = {2}\nУ верхнее = {3}\n".format(x_left, x_right, y_down, y_up)
         self.label_10.setText(strr)
 
-
         self.scene.addRect(x_left, y_up, abs(x_right - x_left), abs(y_down - y_up), self.pen_rest)
-        printf("NOW", now)
+        print("NOW", now)
 
-    def add_bars(self):
+    def rect_from_points(self, xs, ys):
+        self.rect[0] = min(xs)
+        self.rect[1] = max(xs)
+        self.rect[2] = min(ys)
+        self.rect[3] = max(ys)
+
+    def draw_otsekatel(self, scene):
+        x1 = self.rect[0]
+        y1 = self.rect[2]
+        dx = self.rect[1] - self.rect[0]
+        dy = self.rect[3] - self.rect[2]
+        scene.addRect(x1, y1, dx, dy, self.pen_rest)
+
+    def remove_otsekatel(self, scene):
+        x1 = self.rect[0]
+        y1 = self.rect[2]
+        scene.removeItem(scene.itemAt(x1, y1, QTransform()))
+
+    def draw_edges(self):
         global now, wind
-        if now is None:
-            QMessageBox.warning(self, "Внимание!", "1111Не введен отсекатель!")
-            return 
-
-        buf = self.scene.itemAt(now, QTransform())
-        if buf is None:
+        if self.rect == [0, 0, 0, 0]:
             QMessageBox.warning(self, "Внимание!", "Не введен отсекатель!")
         else:
-            buf = buf.rect()
-            self.clip = [buf.left(), buf.right(), buf.top(),  buf.bottom()]
+            x1 = self.rect[0]
+            y1 = self.rect[2]
+            x2 = self.rect[1]
+            y2 = self.rect[3]
 
-            t = abs(self.clip[2] - self.clip[3]) * 0.8
-            k = abs(self.clip[0] - self.clip[1]) * 0.8
+            k = 0.2
+            dx = abs(x2 - x1)
+            dy = abs(y2 - y1)
             # задаем граничные отрезки
-            
-            self.lines.append([[self.clip[0], self.clip[2] + t],  [self.clip[0], self.clip[3] - t]])
-            add_row(wind)
-            i = self.table_line.rowCount() - 1
-            item_b = QTableWidgetItem("[{0}, {1}]".format(self.clip[0], self.clip[2] + t))
-            item_e = QTableWidgetItem("[{0}, {1}]".format(self.clip[0], self.clip[3] - t))
-            self.table_line.setItem(i, 0, item_b)
-            self.table_line.setItem(i, 1, item_e)
-            # bresenham(self.scene, self.clip[0],  self.clip[0],  self.clip[2] + t, self.clip[3] - t, self.pen_line)
-            self.scene.addLine(self.clip[0], self.clip[2] + t,  self.clip[0], self.clip[3] - t, self.pen_line)
-
-            self.lines.append([[self.clip[1], self.clip[2] + t],  [self.clip[1], self.clip[3] - t]])
-            add_row(wind)
-            i = self.table_line.rowCount() - 1
-            item_b = QTableWidgetItem("[{0}, {1}]".format(self.clip[1], self.clip[2] + t))
-            item_e = QTableWidgetItem("[{0}, {1}]".format(self.clip[1], self.clip[3] - t))
-            self.table_line.setItem(i, 0, item_b)
-            self.table_line.setItem(i, 1, item_e)
-            # bresenham(self.scene, self.clip[1], self.clip[1],  self.clip[3] - t, self.clip[2] + t, self.pen_line)
-            self.scene.addLine(self.clip[1], self.clip[3] - t,  self.clip[1], self.clip[2] + t, self.pen_line)
-
-            self.lines.append([[self.clip[0] + k, self.clip[2]], [self.clip[1] - k, self.clip[2]]])
-            add_row(wind)
-            i = self.table_line.rowCount() - 1
-            item_b = QTableWidgetItem("[{0}, {1}]".format(self.clip[0] + k, self.clip[2]))
-            item_e = QTableWidgetItem("[{0}, {1}]".format(self.clip[1] - k, self.clip[2]))
-            self.table_line.setItem(i, 0, item_b)
-            self.table_line.setItem(i, 1, item_e)
-            # bresenham(self.scene,self.clip[0] + k, self.clip[1] - k,  self.clip[2], self.clip[2], self.pen_line)
-            self.scene.addLine(self.clip[0] + k, self.clip[2], self.clip[1] - k, self.clip[2], self.pen_line)
-
-            self.lines.append([[self.clip[0] + k, self.clip[3]], [self.clip[1] - k, self.clip[3]]])
-            add_row(wind)
-            i = self.table_line.rowCount() - 1
-            item_b = QTableWidgetItem("[{0}, {1}]".format(self.clip[0] + k, self.clip[3]))
-            item_e = QTableWidgetItem("[{0}, {1}]".format(self.clip[1] - k, self.clip[3]))
-            self.table_line.setItem(i, 0, item_b)
-            self.table_line.setItem(i, 1, item_e)
-            # bresenham(self.scene,self.clip[0] + k, self.clip[1] - k,  self.clip[3], self.clip[3], self.pen_line)
-            self.scene.addLine(self.clip[0] + k, self.clip[3], self.clip[1] - k, self.clip[3], self.pen_line)
+            self.scene_add_line(x1 + dx * k, x2 - dx * k, y1, y1)
+            self.scene_add_line(x1 + dx * k, x2 - dx * k, y2, y2)
+            self.scene_add_line(x1, x1, y1 + dy * k, y2 - dy * k)
+            self.scene_add_line(x2, x2, y1 + dy * k, y2 - dy * k)
 
 
 
@@ -393,8 +312,8 @@ def add_row(win):
 
 # Добавить точку
 def add_point(point):
-    global wind, ctrl
-    print("add_point", ctrl)
+    global wind, shift
+    print("add_point, shift", shift)
     x = point.x()
     y = point.y()
     print("x, y", x, y)
@@ -402,21 +321,20 @@ def add_point(point):
         if wind.point_now is None:
             wind.point_now = point
         else:
-            if ctrl:
+            if shift:
                 if abs(point.x() - wind.point_now.x()) < abs(point.y() - wind.point_now.y()):
                     x = wind.point_now.x()
                 elif abs(point.y() - wind.point_now.y()) < abs(point.x() - wind.point_now.x()):
                     y = wind.point_now.y()
-                ctrl = False
-            print("x, y", x, y)
-            
+                # shift = False
+
             wind.lines.append([[wind.point_now.x(), wind.point_now.y()],
                             [x, y]])
 
             add_row(wind)
             i = wind.table_line.rowCount() - 1
             item_b = QTableWidgetItem("[{0}, {1}]".format(wind.point_now.x(), wind.point_now.y()))
-            item_e = QTableWidgetItem("[{0}, {1}]".format(point.x(), point.y()))
+            item_e = QTableWidgetItem("[{0}, {1}]".format(x, y))
             wind.table_line.setItem(i, 0, item_b)
             wind.table_line.setItem(i, 1, item_e)
             # bresenham(wind.scene, wind.point_now.x(), x, wind.point_now.y(), y, wind.pen_line)
@@ -446,7 +364,7 @@ def clipping():
     try:
         w = int(wind.spinBox_w.text())
     except Exception:
-        QMessageBox.warning(wind, "Внимание!", "Не целове значение толщины!")
+        QMessageBox.warning(wind, "Внимание!", "Нецелое значение толщины!")
         return 
     wind.pen_res.setWidth(w)
 
@@ -463,10 +381,12 @@ def clipping():
     #     QMessageBox.warning(wind, "Внимание!", "111Не введен отсекатель!")
     #     return
 
-    for b in wind.lines:
-        cohen_sutherland(b, wind.rect) 
-   
-
+    rect = wind.rect[:]
+    rect[3], rect[2] = rect[2], rect[3]
+    lines = deepcopy(wind.lines)
+    for b in wind.lines[:]:
+        cohen_sutherland(b, rect)
+    wind.lines = lines
 
 def log_prod(code1, code2):
     p = 0
