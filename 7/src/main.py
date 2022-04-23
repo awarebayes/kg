@@ -192,6 +192,8 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
         self.scene.clear()
         # self.table_line.clear()
         self.lines = []
+        self.rect = [0, 0, 0, 0]
+        self.label_10.setText("Не введен")
         now = None
         self.image.fill(Qt.white)
         r = self.table_line.rowCount()
@@ -265,7 +267,7 @@ class Visual(QtWidgets.QMainWindow, win2.Ui_MainWindow):
         self.label_10.setText(strr)
 
         self.scene.addRect(x_left, y_up, abs(x_right - x_left), abs(y_down - y_up), self.pen_rest)
-        print("NOW", now)
+        now = None
 
     def rect_from_points(self, xs, ys):
         self.rect[0] = min(xs)
@@ -365,22 +367,11 @@ def clipping():
         w = int(wind.spinBox_w.text())
     except Exception:
         QMessageBox.warning(wind, "Внимание!", "Нецелое значение толщины!")
-        return 
+        return
+    if wind.rect == [0, 0, 0, 0]:
+        QMessageBox.warning(wind, "Внимание!", "Не введен отсекатель!")
+        return
     wind.pen_res.setWidth(w)
-
-    # if now is not None:
-    #     buf = wind.scene.itemAt(now.x(), now.y(), QTransform())
-    #     if buf is None:
-    #         QMessageBox.warning(wind, "Внимание!", "Не введен отсекатель!")
-    #     else:
-    #         buf = buf.rect()
-    #         wind.clip = [buf.left(), buf.right(), buf.top(),  buf.bottom()]
-    #     # buf = wind.scene.itemAt(now, QTransform()).rect()
-    #     wind.clip = [buf.left(), buf.right(), buf.top(),  buf.bottom()]
-    # else:
-    #     QMessageBox.warning(wind, "Внимание!", "111Не введен отсекатель!")
-    #     return
-
     rect = wind.rect[:]
     rect[3], rect[2] = rect[2], rect[3]
     lines = deepcopy(wind.lines)
