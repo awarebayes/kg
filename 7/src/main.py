@@ -86,8 +86,7 @@ class Scene(QtWidgets.QGraphicsScene):
 
     def mouseReleaseEvent(self, event: 'QGraphicsSceneMouseEvent') -> None:
         global now
-        if event.button() == Qt.MouseButton.LeftButton:
-            now = None
+        now = None
 
     # добавить прямоугольник
     def mouseMoveEvent(self, event):
@@ -410,18 +409,17 @@ def is_visible(bar, rect):
     return vis
 
 
-def cohen_sutherland(bar, rect):
-    global wind
+def cohen_sutherland(line, rect):
     # инициализация флага
     flag = 0 # общего положения
     m = 1
 
     # проверка вертикальности и горизонтальности отрезка
-    if bar[1][0] - bar[0][0] == 0:
+    if line[1][0] - line[0][0] == 0:
         flag = -1   # вертикальный отрезок
     else:
         # вычисление наклона
-        m = (bar[1][1] - bar[0][1]) / (bar[1][0] - bar[0][0])
+        m = (line[1][1] - line[0][1]) / (line[1][0] - line[0][0])
         if m == 0:
             flag = 1   # горизонтальный
 
@@ -433,12 +431,12 @@ def cohen_sutherland(bar, rect):
                        1 = видимый
                        2 = частично видимый"""
         # Опредление видимости
-        vis = is_visible(bar, rect)
+        vis = is_visible(line, rect)
         # Если тривиально видим (полностью видим), то рисуем и выходим из цикла
         if vis == 1:
             print("if vis == 1:")
             # bresenham(wind.scene, bar[0][0], bar[1][0], bar[0][1], bar[1][1], wind.pen_res)
-            wind.scene.addLine(bar[0][0], bar[0][1], bar[1][0], bar[1][1], wind.pen_res)
+            wind.scene.addLine(line[0][0], line[0][1], line[1][0], line[1][1], wind.pen_res)
             return
         # Иначе проверяем на невидимость (тривиальную невидимость), 
         # то выход из цикла
@@ -447,8 +445,8 @@ def cohen_sutherland(bar, rect):
             return
 
         # проверка пересечения отрезка и стороны окна
-        code1 = get_code(bar[0], rect)
-        code2 = get_code(bar[1], rect)
+        code1 = get_code(line[0], rect)
+        code2 = get_code(line[1], rect)
 
         # Если Т1 == Т2, то переход на след шаг цикла
         if code1[i] == code2[i]:
@@ -462,7 +460,7 @@ def cohen_sutherland(bar, rect):
         # (так как мы всегда принимаем Р1 за невидимую)
         if not code1[i]:
             print("f not code1[i]:")
-            bar[0], bar[1] = bar[1], bar[0]
+            line[0], line[1] = line[1], line[0]
 
 
         # поиск пересечений отрезка со сторонами окна
@@ -472,15 +470,14 @@ def cohen_sutherland(bar, rect):
             # СРавниваем i с 2, так как счет с 0
             if i < 2:
                 print("if flag != -1: if i < 2")
-                bar[0][1] = m * (rect[i] - bar[0][0]) + bar[0][1]
-                bar[0][0] = rect[i]
+                line[0][1] = m * (rect[i] - line[0][0]) + line[0][1]
+                line[0][0] = rect[i]
                 continue
             else:
                 print("if flag != -1: if i < 2 else")
-                bar[0][0] = (1 / m) * (rect[i] - bar[0][1]) + bar[0][0]
-        bar[0][1] = rect[i]
-    # bresenham(wind.scene, bar[0][0], bar[1][0], bar[0][1], bar[1][1], wind.pen_res)
-    wind.scene.addLine(bar[0][0], bar[0][1], bar[1][0], bar[1][1], wind.pen_res)
+                line[0][0] = (1 / m) * (rect[i] - line[0][1]) + line[0][0]
+        line[0][1] = rect[i]
+    wind.scene.addLine(line[0][0], line[0][1], line[1][0], line[1][1], wind.pen_res)
 
 
 
