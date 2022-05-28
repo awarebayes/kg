@@ -304,7 +304,7 @@ class GuiMainWin(Ui_MainWindow):
                 if point != None:
                     self.result.append(point)
             if not len(self.result):
-                break
+                return
             self.fig_arr = self.result
 
         self.draw_result()
@@ -373,7 +373,7 @@ def is_cross(edge_start, edge_end, cut_start, cut_end):
     flag_1 = is_visible_point(edge_start, cut_start, cut_end)
     flag_2 = is_visible_point(edge_end, cut_start, cut_end)
 
-    if flag_1 * flag_2 <= 0:
+    if flag_1 <= 0 and flag_2 >= 0 or flag_1 >= 0 and flag_2 <= 0:
         return True
     else:
         return False
